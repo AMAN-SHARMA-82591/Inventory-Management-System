@@ -12,6 +12,15 @@ module.exports = (req, res, next) => {
     req.user = decoded;
     return next();
   } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      console.error("Token expired at:", error.expiredAt);
+      return res.status(401).json({
+        success: false,
+        msg: "Token has expired. Please log in again.",
+        expiredAt: error.expiredAt, // Optional: Include the expiration time
+      });
+    }
+    console.error("Something went wrong", error);
     return res.status(401).json({ success: false, msg: "Token is not valid!" });
   }
 };

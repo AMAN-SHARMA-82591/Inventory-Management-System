@@ -1,8 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+import dashboardIcon from "../assets/dashboard-icon.png";
+import inventoryIcon from "../assets/inventory-icon.png";
+import supplierIcon from "../assets/supplier-icon.png";
+import orderIcon from "../assets/order-icon.png";
+import categoryIcon from "../assets/categorization.png";
 
 function SideMenu() {
-  const localStorageData = JSON.parse(localStorage.getItem("user"));
+  const localStorageData = localStorage.getItem("user");
 
   return (
     <div className="h-full flex-col justify-between  bg-white hidden lg:flex ">
@@ -12,10 +17,7 @@ function SideMenu() {
             to="/"
             className="flex items-center gap-2 rounded-lg hover:bg-gray-100 px-4 py-2 text-gray-700"
           >
-            <img
-              alt="dashboard-icon"
-              src={require("../assets/dashboard-icon.png")}
-            />
+            <img alt="dashboard-icon" src={dashboardIcon} />
             <span className="text-sm font-medium"> Dashboard </span>
           </Link>
 
@@ -23,10 +25,7 @@ function SideMenu() {
             <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               <Link to="/inventory">
                 <div className="flex items-center gap-2">
-                  <img
-                    alt="inventory-icon"
-                    src={require("../assets/inventory-icon.png")}
-                  />
+                  <img alt="inventory-icon" src={inventoryIcon} />
                   <span className="text-sm font-medium"> Inventory </span>
                 </div>
               </Link>
@@ -34,20 +33,24 @@ function SideMenu() {
           </details>
 
           <Link
-            to="/purchase-details"
+            to="/product-category"
             className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
-            <img
-              alt="purchase-icon"
-              src={require("../assets/supplier-icon.png")}
-            />
-            <span className="text-sm font-medium"> Purchase Details</span>
+            <img alt="supplier-icon" src={categoryIcon} />
+            <span className="text-sm font-medium">Product Category</span>
+          </Link>
+          <Link
+            to="/supplier-directory"
+            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+          >
+            <img alt="supplier-icon" src={supplierIcon} />
+            <span className="text-sm font-medium"> Supplier Directory</span>
           </Link>
           <Link
             to="/sales"
             className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
-            <img alt="sale-icon" src={require("../assets/supplier-icon.png")} />
+            <img alt="sale-icon" src={supplierIcon} />
             <span className="text-sm font-medium"> Sales</span>
           </Link>
 
@@ -55,10 +58,7 @@ function SideMenu() {
             <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               <Link to="/manage-store">
                 <div className="flex items-center gap-2">
-                  <img
-                    alt="store-icon"
-                    src={require("../assets/order-icon.png")}
-                  />
+                  <img alt="store-icon" src={orderIcon} />
                   <span className="text-sm font-medium"> Manage Store </span>
                 </div>
               </Link>
@@ -78,7 +78,7 @@ function SideMenu() {
           <div>
             <p className="text-xs">
               <strong className="block font-medium">
-                {localStorageData.firstName + " " + localStorageData.lastName}
+                {localStorageData.username}
               </strong>
 
               <span> {localStorageData.email} </span>
