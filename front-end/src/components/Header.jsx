@@ -2,7 +2,8 @@ import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+import logoImage from "../assets/logo.png";
 
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
@@ -20,7 +21,7 @@ function classNames(...classes) {
 
 export default function Header() {
   const authContext = useContext(AuthContext);
-  const localStorageData = JSON.parse(localStorage.getItem("user"));
+  const localStorageData = localStorage.getItem("user");
   return (
     <>
       <div className="min-h-full">
@@ -34,7 +35,7 @@ export default function Header() {
                       <div className="flex justify-center items-center gap-2">
                         <img
                           className="h-8 w-8"
-                          src={require("../assets/logo.png")}
+                          src={logoImage}
                           alt="Inventory Management System"
                         />
                         <span className="font-bold text-white italic">

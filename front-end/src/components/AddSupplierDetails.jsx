@@ -1,49 +1,43 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import axiosInstance from "./AxiosInstance";
+import { toastSuccess } from "./ToastContainer";
+import { handleError } from "./ErrorHandler";
 
-export default function AddPurchaseDetails({
+export default function AddSupplierDetails({
   addSaleModalSetting,
-  products,
+  supplierList,
   handlePageUpdate,
-  authContext
+  authContext,
 }) {
-  const [purchase, setPurchase] = useState({
-    userID: authContext.user,
-    productID: "",
-    quantityPurchased: "",
-    purchaseDate: "",
-    totalPurchaseAmount: "",
+  const [supplier, setSupplier] = useState({
+    name: "", // Supplier Org Name
+    contact_person: "", // Name of person in that organization
+    email: "", // Official Email address
+    address: "",
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
-  console.log("PPu: ", purchase);
-
-  // Handling Input Change for input fields
   const handleInputChange = (key, value) => {
-    setPurchase({ ...purchase, [key]: value });
+    setSupplier({ ...supplier, [key]: value });
   };
 
-  // POST Data
-  const addSale = () => {
-    fetch("http://localhost:4000/api/purchase/add", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(purchase),
-    })
-      .then((result) => {
-        alert("Purchase ADDED");
+  const addSale = async () => {
+    try {
+      const response = await axiosInstance.post("/supplier", supplier);
+      if (response.data) {
+        toastSuccess("Supplier added successfully!");
         handlePageUpdate();
         addSaleModalSetting();
-      })
-      .catch((err) => console.log(err));
+      }
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   return (
-    // Modal
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -88,94 +82,101 @@ export default function AddPurchaseDetails({
                         as="h3"
                         className="text-lg  py-4 font-semibold leading-6 text-gray-900 "
                       >
-                        Purchase Details
+                        Supplier Details
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                           <div>
                             <label
                               htmlFor="productID"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                              Product Name
+                              Supplier Name
                             </label>
-                            <select
+                            <input
+                              type="text"
+                              name="name"
+                              id="name"
+                              value={supplier.name}
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              placeholder="Ex. Acme Supplies Co."
+                            />
+                            {/* <select
                               id="productID"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                               name="productID"
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
                             >
                               <option selected="">Select Products</option>
-                              {products.map((element, index) => {
+                              {supplierList.map((element) => {
                                 return (
                                   <option key={element._id} value={element._id}>
                                     {element.name}
                                   </option>
                                 );
                               })}
-                            </select>
+                            </select> */}
                           </div>
                           <div>
                             <label
                               htmlFor="quantityPurchased"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                              Quantity Purchased
+                              Contact Person
                             </label>
                             <input
-                              type="number"
-                              name="quantityPurchased"
-                              id="quantityPurchased"
-                              value={purchase.quantityPurchased}
+                              type="text"
+                              name="contact_person"
+                              id="contact_person"
+                              value={supplier.contact_person}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="0 - 999"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              placeholder="Ex. John Doe"
                             />
                           </div>
                           <div>
                             <label
-                              htmlFor="totalPurchaseAmount"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="quantityPurchased"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                              Total Purchase Amount
+                              Email Address
                             </label>
                             <input
-                              type="number"
-                              name="totalPurchaseAmount"
-                              id="price"
-                              value={purchase.totalPurchaseAmount}
+                              type="text"
+                              name="email"
+                              id="email"
+                              value={supplier.email}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="$299"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              placeholder="Ex. john@gmail.com"
                             />
                           </div>
-                          <div className="h-fit w-fit">
-                            {/* <Datepicker
-                              onChange={handleChange}
-                              show={show}
-                              setShow={handleClose}
-                            /> */}
+                          <div>
                             <label
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                              htmlFor="purchaseDate"
+                              htmlFor="quantityPurchased"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                              Purchase Date
+                              Address
                             </label>
                             <input
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              type="date"
-                              id="purchaseDate"
-                              name="purchaseDate"
-                              value={purchase.purchaseDate}
+                              type="text"
+                              name="address"
+                              id="address"
+                              value={supplier.address}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              placeholder="Ex. 123 Market Street, Florida"
                             />
                           </div>
                         </div>

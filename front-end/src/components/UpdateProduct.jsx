@@ -1,29 +1,28 @@
-import { Fragment, useContext, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import AuthContext from "../AuthContext";
 
-export default function AddProduct({
-  addProductModalSetting,
-  handlePageUpdate,
+export default function UpdateProduct({
+  updateProductData,
+  updateModalSetting,
 }) {
-  const authContext = useContext(AuthContext);
+  const { _id, name, manufacturer, description } = updateProductData;
   const [product, setProduct] = useState({
-    userId: authContext.user,
-    name: "",
-    manufacturer: "",
-    description: "",
+    productID: _id,
+    name: name,
+    manufacturer: manufacturer,
+    description: description,
   });
-  console.log("----",product)
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
   const handleInputChange = (key, value) => {
+    console.log(key);
     setProduct({ ...product, [key]: value });
   };
 
-  const addProduct = () => {
-    fetch("http://localhost:4000/api/product/add", {
+  const updateProduct = () => {
+    fetch("http://localhost:4000/api/product/update", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -31,9 +30,8 @@ export default function AddProduct({
       body: JSON.stringify(product),
     })
       .then((result) => {
-        alert("Product ADDED");
-        handlePageUpdate();
-        addProductModalSetting();
+        alert("Product Updated");
+        setOpen(false);
       })
       .catch((err) => console.log(err));
   };
@@ -84,14 +82,14 @@ export default function AddProduct({
                         as="h3"
                         className="text-lg font-semibold leading-6 text-gray-900 "
                       >
-                        Add Product
+                        Update Product
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                           <div>
                             <label
                               htmlFor="name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
                               Name
                             </label>
@@ -103,14 +101,14 @@ export default function AddProduct({
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                               placeholder="Ex. Apple iMac 27&ldquo;"
                             />
                           </div>
                           <div>
                             <label
                               htmlFor="manufacturer"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
                               Manufacturer
                             </label>
@@ -122,53 +120,14 @@ export default function AddProduct({
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                               placeholder="Ex. Apple"
                             />
                           </div>
-                          {/* <div>
-                            <label
-                              for="price"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Price
-                            </label>
-                            <input
-                              type="number"
-                              name="price"
-                              id="price"
-                              value={product.price}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="$299"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              for="quantity"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Quantity
-                            </label>
-                            <input
-                              type="number"
-                              name="quantity"
-                              id="quantity"
-                              value={product.quantity}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="0 - 999"
-                            />
-                          </div> */}
-
                           <div className="sm:col-span-2">
                             <label
                               htmlFor="description"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900"
                             >
                               Description
                             </label>
@@ -176,7 +135,7 @@ export default function AddProduct({
                               id="description"
                               rows="5"
                               name="description"
-                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                               placeholder="Write a description..."
                               value={product.description}
                               onChange={(e) =>
@@ -225,14 +184,14 @@ export default function AddProduct({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={addProduct}
+                    onClick={updateProduct}
                   >
-                    Add Product
+                    Update Product
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => addProductModalSetting()}
+                    onClick={() => updateModalSetting()}
                     ref={cancelButtonRef}
                   >
                     Cancel
