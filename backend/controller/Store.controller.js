@@ -1,27 +1,24 @@
 const { validationResult } = require("express-validator");
 const connection = require("../config/db");
 const {
-  GET_CATEGORY_LIST,
-  GET_CATEGORY_BY_ID,
-  CREATE_CATEGORY,
-  UPDATE_CATEGORY,
-  DELETE_CATEGORY,
-} = require("../queries/categoryQueries");
+  GET_STORE_LIST,
+  GET_STORE_BY_ID,
+  CREATE_STORE,
+  UPDATE_STORE,
+  DELETE_STORE,
+} = require("../queries/storeQueries");
 const handleDbError = require("../utils/dbErrorHandler");
 
-const getCategoryList = (req, res) => {
+const getStoreList = (req, res) => {
   try {
-    connection.query(GET_CATEGORY_LIST, (error, result) => {
+    connection.query(GET_STORE_LIST, (error, result) => {
       if (error) {
-        console.error("Error fetching data:", error);
-        return res
-          .status(400)
-          .json({ success: false, msg: "Error fetching Data" });
+        return handleDbError(error, res);
       }
       if (!result.length) {
         return res
           .status(404)
-          .json({ success: false, msg: "Error Fetching category list." });
+          .json({ success: false, msg: "Error Fetching store list." });
       }
       return res.status(200).json({ success: true, result });
     });
@@ -31,20 +28,15 @@ const getCategoryList = (req, res) => {
   }
 };
 
-const getCategory = (req, res) => {
+const getStore = (req, res) => {
   const { id } = req.params;
   try {
-    connection.query(GET_CATEGORY_BY_ID, id, (error, result) => {
+    connection.query(GET_STORE_BY_ID, id, (error, result) => {
       if (error) {
-        console.error("Error fetching data:", error);
-        return res
-          .status(400)
-          .json({ success: false, msg: "Error fetching Data" });
+        return handleDbError(error, res);
       }
       if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Category not found" });
+        return res.status(404).json({ success: false, msg: "Store not found" });
       }
       return res.status(200).json({ success: true, result: result[0] });
     });
@@ -54,8 +46,8 @@ const getCategory = (req, res) => {
   }
 };
 
-const createCategory = (req, res) => {
-  const { name, description } = req.body;
+const createStore = (req, res) => {
+  const { name, location, manager } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -65,13 +57,11 @@ const createCategory = (req, res) => {
     });
   }
   try {
-    connection.execute(CREATE_CATEGORY, [name, description], (error) => {
+    connection.execute(CREATE_STORE, [name, location, manager], (error) => {
       if (error) {
         return handleDbError(error, res);
       }
-      return res
-        .status(200)
-        .json({ success: true, msg: "New category created" });
+      return res.status(200).json({ success: true, msg: "New store created" });
     });
   } catch (error) {
     console.error(error);
@@ -79,15 +69,15 @@ const createCategory = (req, res) => {
   }
 };
 
-const updateCategory = (req, res) => {
+const updateStore = (req, res) => {
   const {
     params: { id },
-    body: { name, description },
+    body: { name, location, manager },
   } = req;
   try {
     connection.execute(
-      UPDATE_CATEGORY,
-      [name, description, id],
+      UPDATE_STORE,
+      [name, location, manager, id],
       (error, result) => {
         if (error) {
           return handleDbError(error, res);
@@ -95,9 +85,9 @@ const updateCategory = (req, res) => {
         if (result.affectedRows === 0) {
           return res
             .status(404)
-            .json({ success: false, msg: "Category not found" });
+            .json({ success: false, msg: "Store not found" });
         }
-        return res.status(200).json({ success: true, mst: "Category updated" });
+        return res.status(200).json({ success: true, mst: "Store updated" });
       }
     );
   } catch (error) {
@@ -106,21 +96,19 @@ const updateCategory = (req, res) => {
   }
 };
 
-const deleteCategory = (req, res) => {
+const deleteStore = (req, res) => {
   const {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_CATEGORY, id, (error, result) => {
+    connection.execute(DELETE_STORE, id, (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }
       if (result.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Category not found" });
+        return res.status(404).json({ success: false, msg: "Store not found" });
       }
-      return res.status(200).json({ success: true, msg: "Category deleted!" });
+      return res.status(200).json({ success: true, msg: "Store deleted!" });
     });
   } catch (error) {
     console.error(error);
@@ -129,9 +117,9 @@ const deleteCategory = (req, res) => {
 };
 
 module.exports = {
-  getCategory,
-  getCategoryList,
-  createCategory,
-  updateCategory,
-  deleteCategory,
+  getStore,
+  getStoreList,
+  createStore,
+  updateStore,
+  deleteStore,
 };

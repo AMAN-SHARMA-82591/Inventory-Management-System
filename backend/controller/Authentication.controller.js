@@ -39,7 +39,7 @@ const register = (req, res) => {
         } else {
           const salt = await bcrypt.genSalt(5);
           const encryptPassword = await bcrypt.hash(password, salt);
-          connection.query(
+          connection.execute(
             "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
             [username, email, encryptPassword, role],
             (error, result) => {

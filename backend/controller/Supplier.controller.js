@@ -65,7 +65,7 @@ const createSupplier = (req, res) => {
     });
   }
   try {
-    connection.query(
+    connection.execute(
       CREATE_SUPPLIER,
       [name, contact_person, email, address],
       (error) => {
@@ -95,7 +95,7 @@ const updateSupplier = (req, res) => {
     });
   }
   try {
-    connection.query(
+    connection.execute(
       UPDATE_SUPPLIER,
       [name, contact_person, email, address, id],
       (error, result) => {
@@ -123,7 +123,7 @@ const deleteSupplier = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.query(DELETE_SUPPLIER, id, (error, result) => {
+    connection.execute(DELETE_SUPPLIER, id, (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

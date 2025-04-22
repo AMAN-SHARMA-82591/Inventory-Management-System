@@ -73,7 +73,7 @@ const createProduct = (req, res) => {
   }
   const finalCategoryId = category_id ?? 8;
   try {
-    connection.query(
+    connection.execute(
       CREATE_PRODUCT,
       [name, description, price, quantity, finalCategoryId, supplier_id],
       (error) => {
@@ -111,7 +111,7 @@ const updateProduct = (req, res) => {
   }
   const finalCategoryId = category_id ?? 8;
   try {
-    connection.query(
+    connection.execute(
       UPDATE_PRODUCT,
       [name, description, price, quantity, finalCategoryId, supplier_id, id],
       (error, result) => {
@@ -137,7 +137,7 @@ const deleteProduct = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.query(DELETE_PRODUCT, id, (error, result) => {
+    connection.execute(DELETE_PRODUCT, id, (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }
