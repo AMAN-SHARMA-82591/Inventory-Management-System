@@ -15,11 +15,6 @@ const getStoreList = (req, res) => {
       if (error) {
         return handleDbError(error, res);
       }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Error Fetching store list." });
-      }
       return res.status(200).json({ success: true, result });
     });
   } catch (error) {
@@ -101,7 +96,7 @@ const deleteStore = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_STORE, id, (error, result) => {
+    connection.execute(DELETE_STORE, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

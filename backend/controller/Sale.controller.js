@@ -6,23 +6,19 @@ const {
   CREATE_SALE,
   UPDATE_SALE,
   DELETE_SALE,
+  GET_SALE_LIST_WITH_DETAILS,
 } = require("../queries/saleQueries");
 const handleDbError = require("../utils/dbErrorHandler");
 const { checkIfExists } = require("../utils/dbHelpers");
 
 const getSaleList = (req, res) => {
   try {
-    connection.query(GET_SALE_LIST, (error, result) => {
+    connection.query(GET_SALE_LIST_WITH_DETAILS, (error, result) => {
       if (error) {
         console.error("Error fetching data:", error);
         return res
           .status(400)
           .json({ success: false, msg: "Error fetching Data" });
-      }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Error Fetching sale list." });
       }
       return res.status(200).json({ success: true, result });
     });
@@ -152,7 +148,7 @@ const deleteSale = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_SALE, id, (error, result) => {
+    connection.execute(DELETE_SALE, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

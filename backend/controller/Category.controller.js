@@ -18,11 +18,6 @@ const getCategoryList = (req, res) => {
           .status(400)
           .json({ success: false, msg: "Error fetching Data" });
       }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Error Fetching category list." });
-      }
       return res.status(200).json({ success: true, result });
     });
   } catch (error) {
@@ -111,7 +106,7 @@ const deleteCategory = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_CATEGORY, id, (error, result) => {
+    connection.execute(DELETE_CATEGORY, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

@@ -50,8 +50,7 @@ function ProductCategory() {
             authContext={authContext}
           />
         )}
-        {/* Table  */}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
+        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
               <span className="font-bold">Category List</span>
@@ -82,7 +81,6 @@ function ProductCategory() {
                 <tr>
                   <td colSpan="2" className="text-center py-4">
                     <ClipLoader color="#3b82f6" size={35} />
-                    {/* loading */}
                   </td>
                 </tr>
               </tbody>

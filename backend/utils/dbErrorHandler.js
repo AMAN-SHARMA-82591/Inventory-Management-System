@@ -4,6 +4,11 @@ const handleDbError = (error, res) => {
   switch (error.code) {
     case "ER_DUP_ENTRY":
       return res.status(400).json({ success: false, msg: "Duplicate entry" });
+    case "ER_ROW_IS_REFERENCED_2":
+      return res.status(400).json({
+        success: false,
+        msg: "Cannot delete product: It is referenced in sales records.",
+      });
     case "ER_BAD_FIELD_ERROR":
       return res
         .status(400)

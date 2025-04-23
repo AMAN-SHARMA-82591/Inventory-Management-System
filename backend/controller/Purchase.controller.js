@@ -1,28 +1,24 @@
 const { validationResult } = require("express-validator");
 const connection = require("../config/db");
 const {
-  GET_PURCHASE_LIST,
+  // GET_PURCHASE_LIST,
   GET_PURCHASE_BY_ID,
   CREATE_PURCHASE,
   UPDATE_PURCHASE,
   DELETE_PURCHASE,
+  GET_PURCHASE_LIST_WITH_DETAILS,
 } = require("../queries/purchaseQueries");
 const handleDbError = require("../utils/dbErrorHandler");
 const { checkIfExists } = require("../utils/dbHelpers");
 
 const getPurchaseList = (req, res) => {
   try {
-    connection.query(GET_PURCHASE_LIST, (error, result) => {
+    connection.query(GET_PURCHASE_LIST_WITH_DETAILS, (error, result) => {
       if (error) {
         console.error("Error fetching data:", error);
         return res
           .status(400)
           .json({ success: false, msg: "Error fetching Data" });
-      }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Error Fetching purchase list." });
       }
       return res.status(200).json({ success: true, result });
     });
@@ -186,7 +182,7 @@ const deletePurchase = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_PURCHASE, id, (error, result) => {
+    connection.execute(DELETE_PURCHASE, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

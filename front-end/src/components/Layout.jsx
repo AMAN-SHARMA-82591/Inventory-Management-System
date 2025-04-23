@@ -4,7 +4,6 @@ import Header from "./Header";
 import SideMenu from "./SideMenu";
 
 function Layout() {
-  console.log("layout working");
   return (
     <>
       <div className="md:h-16">

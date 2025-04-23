@@ -151,7 +151,7 @@ const deleteProductSupplier = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_PRODUCT_SUPPLIER, id, (error, result) => {
+    connection.execute(DELETE_PRODUCT_SUPPLIER, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }
