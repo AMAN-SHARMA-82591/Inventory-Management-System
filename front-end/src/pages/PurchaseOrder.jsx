@@ -1,42 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
-import AddSale from "../components/AddSale";
-import AuthContext from "../AuthContext";
+import React, { useState, useEffect } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 import { handleError } from "../components/ErrorHandler";
 import axiosInstance from "../components/AxiosInstance";
-import ClipLoader from "react-spinners/ClipLoader";
+import AddPurchase from "../components/AddPurchase";
 
-function Sales() {
-  const [showSaleModal, setShowSaleModal] = useState(false);
-  const [sales, setAllSalesData] = useState([]);
+function PurchaseOrder() {
+  const [showPurchaseModal, setPurchaseModal] = useState(false);
+  const [purchaseList, setPurchaseList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [updatePage, setUpdatePage] = useState(true);
 
-  const authContext = useContext(AuthContext);
-
   useEffect(() => {
-    fetchSalesData();
+    fetchSupplierData();
   }, [updatePage]);
 
-  // Fetching Data of All Sales
-  const fetchSalesData = async () => {
+  const fetchSupplierData = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/sale");
+      const response = await axiosInstance.get("/purchase");
       if (response.data) {
         setTimeout(() => setLoading(false), 1500);
-        setAllSalesData(response.data.result);
+        setPurchaseList(response.data.result);
       }
     } catch (error) {
       handleError(error);
     }
   };
 
-  // Modal for Sale Add
-  const addSaleModalSetting = () => {
-    setShowSaleModal(!showSaleModal);
+  const addPurchaseModalSetting = () => {
+    setPurchaseModal(!showPurchaseModal);
   };
 
-  // Handle Page Update
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
   };
@@ -44,24 +38,24 @@ function Sales() {
   return (
     <div className="col-span-12 lg:col-span-10  flex justify-center">
       <div className=" flex flex-col gap-5 w-11/12">
-        {showSaleModal && (
-          <AddSale
-            addSaleModalSetting={addSaleModalSetting}
+        {showPurchaseModal && (
+          <AddPurchase
+            addPurchaseModalSetting={addPurchaseModalSetting}
             handlePageUpdate={handlePageUpdate}
-            authContext={authContext}
           />
         )}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
+        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Sales</span>
+              <span className="font-bold">Purchase Orders</span>
             </div>
             <div className="flex gap-4">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs  rounded"
-                onClick={addSaleModalSetting}
+                onClick={addPurchaseModalSetting}
               >
-                Add Sales
+                {/* <Link to="/inventory/add-product">Add Product</Link> */}
+                Add Purchase
               </button>
             </div>
           </div>
@@ -72,47 +66,53 @@ function Sales() {
                   Product Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Supplier Name
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Store Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Stock Sold
+                  Quantity
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Sales Date
+                  Purchase Date
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Total Sale Amount
+                  Total Cost
                 </th>
               </tr>
             </thead>
             {loading ? (
               <tbody className="divide-y divide-gray-200">
                 <tr>
-                  <td colSpan="5" className="text-center py-4">
+                  <td colSpan="6" className="text-center py-4">
                     <ClipLoader color="#3b82f6" size={35} />
                   </td>
                 </tr>
               </tbody>
             ) : (
               <tbody className="divide-y divide-gray-200">
-                {sales.length > 0 ? (
-                  sales.map((element) => {
+                {purchaseList.length > 0 ? (
+                  purchaseList.map((element) => {
                     return (
                       <tr key={element.id}>
-                        <td className="whitespace-nowrap px-4 py-2  text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
                           {element.product_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                          {element.supplier_name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
                           {element.store_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
                           {element.quantity}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {new Date(element.sales_date).toDateString()}
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                          {new Date(element.purchase_date).toDateString()}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          ${element.total_amount}
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                          {element.total_cost}
                         </td>
                       </tr>
                     );
@@ -133,4 +133,4 @@ function Sales() {
   );
 }
 
-export default Sales;
+export default PurchaseOrder;

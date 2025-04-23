@@ -1,67 +1,123 @@
-import React from "react";
-import { Link } from "react-router";
-import dashboardIcon from "../assets/dashboard-icon.png";
-import inventoryIcon from "../assets/inventory-icon.png";
-import supplierIcon from "../assets/supplier-icon.png";
-import orderIcon from "../assets/order-icon.png";
-import categoryIcon from "../assets/categorization.png";
+import React, { useContext } from "react";
+import { NavLink } from "react-router";
+import { truncate } from "lodash";
+import {
+  HomeIcon,
+  UserGroupIcon,
+  Squares2X2Icon,
+  UserCircleIcon,
+  DocumentTextIcon,
+  ShoppingCartIcon,
+  ClipboardDocumentIcon,
+  BuildingStorefrontIcon,
+} from "@heroicons/react/24/outline";
+import AuthContext from "../AuthContext";
 
 function SideMenu() {
-  const localStorageData = localStorage.getItem("user");
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className="h-full flex-col justify-between  bg-white hidden lg:flex ">
+    <div className="h-full flex-col justify-between bg-white hidden lg:flex ">
       <div className="px-4 py-6">
         <nav aria-label="Main Nav" className="mt-6 flex flex-col space-y-1">
-          <Link
+          <NavLink
             to="/"
-            className="flex items-center gap-2 rounded-lg hover:bg-gray-100 px-4 py-2 text-gray-700"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
           >
-            <img alt="dashboard-icon" src={dashboardIcon} />
-            <span className="text-sm font-medium"> Dashboard </span>
-          </Link>
+            <HomeIcon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Dashboard</span>
+          </NavLink>
 
-          <details className="group [&_summary::-webkit-details-marker]:hidden">
-            <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              <Link to="/inventory">
-                <div className="flex items-center gap-2">
-                  <img alt="inventory-icon" src={inventoryIcon} />
-                  <span className="text-sm font-medium"> Inventory </span>
-                </div>
-              </Link>
-            </summary>
-          </details>
-
-          <Link
+          <NavLink
+            to="/inventory"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
+          >
+            <ClipboardDocumentIcon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Inventory</span>
+          </NavLink>
+          <NavLink
             to="/product-category"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
           >
-            <img alt="supplier-icon" src={categoryIcon} />
-            <span className="text-sm font-medium">Product Category</span>
-          </Link>
-          <Link
+            <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Product Category</span>
+          </NavLink>
+          <NavLink
             to="/supplier-directory"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
           >
-            <img alt="supplier-icon" src={supplierIcon} />
-            <span className="text-sm font-medium"> Supplier Directory</span>
-          </Link>
-          <Link
+            <UserGroupIcon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Supplier Directory</span>
+          </NavLink>
+          <NavLink
             to="/sales"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
           >
-            <img alt="sale-icon" src={supplierIcon} />
-            <span className="text-sm font-medium"> Sales</span>
-          </Link>
+            <ShoppingCartIcon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Sales</span>
+          </NavLink>
+          <NavLink
+            to="/purchase"
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 font-medium ${
+                isActive
+                  ? "text-blue-400 bg-blue-50"
+                  : "text-gray-500 hover:text-blue-500 hover:bg-gray-100"
+              }`
+            }
+          >
+            <DocumentTextIcon className="h-5 w-5" aria-hidden="true" />
+            <span className="text-sm">Purchase Orders</span>
+          </NavLink>
 
           <details className="group [&_summary::-webkit-details-marker]:hidden">
-            <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              <Link to="/manage-store">
-                <div className="flex items-center gap-2">
-                  <img alt="store-icon" src={orderIcon} />
-                  <span className="text-sm font-medium"> Manage Store </span>
-                </div>
-              </Link>
+            <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-blue-500">
+              <NavLink
+                to="/manage-store"
+                className={({ isActive }) =>
+                  `flex items-center gap-2 ${
+                    isActive
+                      ? "text-blue-400"
+                      : "text-gray-500 hover:text-blue-500"
+                  }`
+                }
+              >
+                <BuildingStorefrontIcon
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-medium">Manage Store</span>
+              </NavLink>
             </summary>
           </details>
         </nav>
@@ -69,19 +125,14 @@ function SideMenu() {
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
         <div className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
-          <img
-            alt="Profile"
-            src={localStorageData.imageUrl}
-            className="h-10 w-10 rounded-full object-cover"
-          />
+          <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
 
           <div>
             <p className="text-xs">
               <strong className="block font-medium">
-                {localStorageData.username}
+                {truncate(user?.username, { length: 20 })}
               </strong>
-
-              <span> {localStorageData.email} </span>
+              <span> {truncate(user?.email, { length: 20 })} </span>
             </p>
           </div>
         </div>

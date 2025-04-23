@@ -15,6 +15,7 @@ import SupplierDirectory from "./pages/SupplierDirectory";
 import { ToastContainer } from "react-toastify";
 import ProductCategory from "./pages/ProductCategory";
 import ClipLoader from "react-spinners/ClipLoader";
+import PurchaseOrder from "./pages/PurchaseOrder";
 
 function App() {
   const [user, setUser] = useState("");
@@ -72,11 +73,12 @@ function App() {
             }
           >
             <Route index element={<Dashboard />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/supplier-directory" element={<SupplierDirectory />} />
-            <Route path="/product-category" element={<ProductCategory />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/manage-store" element={<Store />} />
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="purchase" element={<PurchaseOrder />} />
+            <Route path="/product-category" element={<ProductCategory />} />
+            <Route path="/supplier-directory" element={<SupplierDirectory />} />
           </Route>
           <Route path="*" element={<NoPageFound />} />
         </Routes>

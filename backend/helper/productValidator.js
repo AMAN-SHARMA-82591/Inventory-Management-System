@@ -2,32 +2,18 @@ const { check } = require("express-validator");
 
 const productFieldValidator = [
   check("name", "Name Field is required!").not().isEmpty(),
-  check("price", "Price must be a positive number!")
+  check("price")
     .not()
     .isEmpty()
-    .withMessage("Price File is required!")
-    .isFloat({ gt: 0 }),
-  check("quantity", "Quantity must be a positive number!")
+    .withMessage("Price Field is required!")
+    .isFloat({ gt: 0 })
+    .withMessage("Price must be a valid number greater than 0!"),
+  check("quantity")
     .optional()
-    .isInt({ gt: 0 }),
-  check("category_id", "Category ID must be a valid number or null!")
-    .optional()
-    .custom((value) => {
-      if (value === null) return true;
-      if (!Number.isInteger(Number(value)) || Number(value) <= 0) {
-        throw new Error("Category ID must be a valid ID or null!");
-      }
-      return true;
-    }),
-  check("supplier_id", "Supplier ID must be a valid number or null!")
-    .optional()
-    .custom((value) => {
-      if (value === null) return true;
-      if (!Number.isInteger(Number(value)) || Number(value) <= 0) {
-        throw new Error("Supplier ID must be a valid ID or null!");
-      }
-      return true;
-    }),
+    .isInt({ min: 0 })
+    .withMessage(
+      "Quantity must be a valid integer greater than or equal to 0!"
+    ),
 ];
 
 const productSupplierFieldValidator = [

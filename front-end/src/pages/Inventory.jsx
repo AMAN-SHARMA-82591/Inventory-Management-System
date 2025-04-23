@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import Markdown from "react-markdown";
+import ClipLoader from "react-spinners/ClipLoader";
 import AddProduct from "../components/AddProduct";
 import UpdateProduct from "../components/UpdateProduct";
-import AuthContext from "../AuthContext";
 import searchIcon from "../assets/search-icon.png";
+import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import axiosInstance from "../components/AxiosInstance";
-import { toastError, toastSuccess } from "../components/ToastContainer";
+import { toastSuccess } from "../components/ToastContainer";
 import { handleError } from "../components/ErrorHandler";
 
 function Inventory() {
@@ -15,8 +17,7 @@ function Inventory() {
   const [searchTerm, setSearchTerm] = useState();
   const [updatePage, setUpdatePage] = useState(true);
   const [stores, setAllStores] = useState([]);
-
-  const authContext = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchProductsData();
@@ -25,9 +26,11 @@ function Inventory() {
 
   // Fetching Data of All Products
   const fetchProductsData = async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get("/product");
       if (response.data) {
+        setTimeout(() => setLoading(false), 1500);
         setAllProducts(response.data.result);
       }
     } catch (error) {
@@ -48,15 +51,6 @@ function Inventory() {
     }
   };
 
-  // Fetching all stores data
-  const fetchSalesData = () => {
-    fetch(`http://localhost:4000/api/store/get/${authContext.user}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllStores(data);
-      });
-  };
-
   // Modal for Product ADD
   const addProductModalSetting = () => {
     setShowProductModal(!showProductModal);
@@ -74,6 +68,7 @@ function Inventory() {
       const response = await axiosInstance.delete(`/product/${id}`);
       if (response.data) {
         toastSuccess("Successfully deleted product");
+        handlePageUpdate();
       }
     } catch (error) {
       handleError(error);
@@ -191,12 +186,11 @@ function Inventory() {
           />
         )}
 
-        {/* Table  */}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
+        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
               <span className="font-bold">Products</span>
-              <div className="flex justify-center items-center px-2 border-2 rounded-md ">
+              <div className="flex justify-center items-center px-2 py-0.5 border-2 rounded-md ">
                 <img alt="search-icon" className="w-5 h-5" src={searchIcon} />
                 <input
                   className="border-none outline-none focus:border-none text-xs"
@@ -224,7 +218,10 @@ function Inventory() {
                   Products
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Manufacturer
+                  Category Name
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  Supplier Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Stock
@@ -240,44 +237,72 @@ function Inventory() {
                 </th>
               </tr>
             </thead>
-
-            <tbody className="divide-y divide-gray-200">
-              {products.map((element, index) => {
-                return (
-                  <tr key={element._id}>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-900">
-                      {element.name}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.manufacturer}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.quantity}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.description}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.price}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <span
-                        className="text-green-700 cursor-pointer"
-                        onClick={() => updateProductModalSetting(element)}
-                      >
-                        Edit{" "}
-                      </span>
-                      <span
-                        className="text-red-600 px-2 cursor-pointer"
-                        onClick={() => deleteItem(element.id)}
-                      >
-                        Delete
-                      </span>
+            {loading ? (
+              <tbody className="divide-y divide-gray-200">
+                <tr>
+                  <td colSpan="8" className="text-center py-4">
+                    <ClipLoader color="#3b82f6" size={35} />
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody className="divide-y divide-gray-200">
+                {products.length > 0 ? (
+                  products.map((element) => {
+                    return (
+                      <tr key={element.id}>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          {element.name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.category_name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.supplier_name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.quantity || "Not in Stock"}
+                        </td>
+                        <td className="px-4 py-2 text-gray-700 break-words max-w-[300px]">
+                          <Markdown>{element.description}</Markdown>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.price}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          <button
+                            disabled
+                            className="text-green-700 disabled:text-gray-400"
+                            onClick={() => updateProductModalSetting(element)}
+                          >
+                            <PencilIcon
+                              className="h-5 w-5 text-red"
+                              aria-hidden="true"
+                            />{" "}
+                          </button>
+                          <button
+                            disabled
+                            className="text-red-600 px-2 disabled:text-gray-400"
+                            onClick={() => deleteItem(element.id)}
+                          >
+                            <TrashIcon
+                              className="h-5 w-5 text-red"
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4">
+                      No Data Found
                     </td>
                   </tr>
-                );
-              })}
-            </tbody>
+                )}
+              </tbody>
+            )}
           </table>
         </div>
       </div>

@@ -18,11 +18,6 @@ const getProductList = (req, res) => {
           .status(400)
           .json({ success: false, msg: "Error fetching Data" });
       }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Error Fetching product list." });
-      }
       return res.status(200).json({ success: true, result });
     });
   } catch (error) {
@@ -137,7 +132,7 @@ const deleteProduct = (req, res) => {
     params: { id },
   } = req;
   try {
-    connection.execute(DELETE_PRODUCT, id, (error, result) => {
+    connection.execute(DELETE_PRODUCT, [id], (error, result) => {
       if (error) {
         return handleDbError(error, res);
       }

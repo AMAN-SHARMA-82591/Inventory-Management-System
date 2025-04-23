@@ -71,13 +71,13 @@ function SupplierDirectory() {
             <thead>
               <tr>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Supplier Name
+                  Company Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Email Address
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Contact Number
+                  Contact Person
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Address
@@ -94,28 +94,36 @@ function SupplierDirectory() {
               </tbody>
             ) : (
               <tbody className="divide-y divide-gray-200">
-                {supplierList.map((element) => {
-                  return (
-                    <tr key={element.id}>
-                      <td className="whitespace-nowrap px-4 py-2  text-gray-900">
-                        {element.name}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {element.email}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {/* {new Date(element.PurchaseDate).toLocaleDateString() ==
+                {supplierList.length > 0 ? (
+                  supplierList.map((element) => {
+                    return (
+                      <tr key={element.id}>
+                        <td className="whitespace-nowrap px-4 py-2  text-gray-900">
+                          {element.name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.email}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {/* {new Date(element.PurchaseDate).toLocaleDateString() ==
                       new Date().toLocaleDateString()
                         ? "Today"
                         : element.PurchaseDate} */}
-                        {element.contact_person}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        {element.address}
-                      </td>
-                    </tr>
-                  );
-                })}
+                          {element.contact_person}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {element.address}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4">
+                      No Data Found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             )}
           </table>
