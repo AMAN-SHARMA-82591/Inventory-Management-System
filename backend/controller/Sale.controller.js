@@ -50,7 +50,6 @@ const getSale = (req, res) => {
 };
 
 const createSale = async (req, res) => {
-  const { product_id, store_id, quantity, sales_date, total_amount } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -59,15 +58,44 @@ const createSale = async (req, res) => {
       errors: errors.array(),
     });
   }
+  const { product_id, store_id, quantity, sales_date, total_amount } = req.body;
   try {
-    const productExists = await checkIfExists("products", "id", product_id);
-    if (!productExists) {
+    const [product] = await connection
+      .promise()
+      .query("SELECT price, quantity AS stock FROM products WHERE id = ?", [
+        product_id,
+      ]);
+
+    if (!product.length) {
       return res.status(404).json({
         success: false,
         field: "product_id",
         msg: "Invalid product ID",
       });
     }
+    const { price, stock } = product[0];
+
+    // Check Stock Availability
+    if (quantity > stock) {
+      return res.status(400).json({
+        success: false,
+        msg: `Quantity exceeds available stock. Only ${stock} units are available.`,
+      });
+    }
+
+    // Validate total amount
+    const expectedTotalAmount = quantity * price;
+    if (
+      parseFloat(total_amount) !== parseFloat(expectedTotalAmount.toFixed(2))
+    ) {
+      return res.status(400).json({
+        success: false,
+        msg: `Total Amount must be ${expectedTotalAmount.toFixed(
+          2
+        )} for the selected quantity and product price.`,
+      });
+    }
+
     const storeExists = await checkIfExists("stores", "id", store_id);
     if (!storeExists) {
       return res.status(404).json({
@@ -76,27 +104,38 @@ const createSale = async (req, res) => {
         msg: "Invalid store ID",
       });
     }
-    connection.execute(
-      CREATE_SALE,
-      [product_id, store_id, quantity, sales_date, total_amount],
-      (error) => {
-        if (error) {
-          return handleDbError(error, res);
-        }
-        return res.status(200).json({ success: true, msg: "New sale created" });
-      }
-    );
+
+    await connection.promise().beginTransaction();
+
+    await connection
+      .promise()
+      .execute(CREATE_SALE, [
+        product_id,
+        store_id,
+        quantity,
+        sales_date,
+        total_amount,
+      ]);
+
+    const newStock = stock - quantity;
+    await connection
+      .promise()
+      .execute("UPDATE products SET quantity = ? WHERE id = ?", [
+        newStock,
+        product_id,
+      ]);
+
+    await connection.promise().commit();
+
+    return res.status(200).json({ success: true, msg: "New sale created" });
   } catch (error) {
+    await connection.promise().rollback();
     console.error(error);
     return res.status(500).send("Server Error");
   }
 };
 
 const updateSale = async (req, res) => {
-  const {
-    params: { id },
-    body: { product_id, store_id, quantity, sales_date, total_amount },
-  } = req;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -105,13 +144,44 @@ const updateSale = async (req, res) => {
       errors: errors.array(),
     });
   }
+  const {
+    params: { id },
+    body: { product_id, store_id, quantity, sales_date, total_amount },
+  } = req;
   try {
-    const productExists = await checkIfExists("products", "id", product_id);
-    if (!productExists) {
+    const [product] = await connection
+      .promise()
+      .query("SELECT price, quantity AS stock FROM products WHERE id = ?", [
+        product_id,
+      ]);
+
+    if (!product.length) {
       return res.status(404).json({
         success: false,
         field: "product_id",
         msg: "Invalid product ID",
+      });
+    }
+    const { price, stock } = product[0];
+
+    // Check Stock Availability
+    if (quantity > stock) {
+      return res.status(400).json({
+        success: false,
+        msg: `Quantity exceeds available stock. Only ${stock} units are available.`,
+      });
+    }
+
+    // Validate total amount
+    const expectedTotalAmount = quantity * price;
+    if (
+      parseFloat(total_amount) !== parseFloat(expectedTotalAmount.toFixed(2))
+    ) {
+      return res.status(400).json({
+        success: false,
+        msg: `Total Amount must be ${expectedTotalAmount.toFixed(
+          2
+        )} for the selected quantity and product price.`,
       });
     }
     const storeExists = await checkIfExists("stores", "id", store_id);

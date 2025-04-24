@@ -1,18 +1,35 @@
-const GET_PRODUCT_LIST = `SELECT 
+const GET_PRODUCT_LIST = (fieldName) => {
+  const updatedField =
+    fieldName === "all"
+      ? `
     p.id,
     p.name,
     p.description,
     p.price,
     p.quantity,
-    s.name AS supplier_name,
     c.name AS category_name
-FROM
-    products AS p
+  `
+      : fieldName;
+  let query = `
+    SELECT 
+      ${updatedField}
+    FROM
+        products AS p
         LEFT JOIN
-    suppliers AS s ON p.supplier_id = s.id
-		LEFT JOIN
-	categories AS c ON p.category_id = c.id`;
-const GET_PRODUCT_BY_ID = "SELECT * FROM products WHERE id = ?";
+      categories AS c ON p.category_id = c.id
+    ORDER BY quantity DESC
+    `;
+  return query;
+};
+const GET_PRODUCT_INPUT_LIST = (filterQuantity) => {
+  let query = "SELECT id,name FROM products";
+  if (parseInt(filterQuantity)) {
+    query += " WHERE quantity > 0";
+  }
+  return query;
+};
+const GET_PRODUCT_BY_ID = (selectedFields) =>
+  `SELECT ${selectedFields} FROM products WHERE id = ?`;
 const CREATE_PRODUCT =
   "INSERT INTO products (name, description, price, quantity, category_id, supplier_id) VALUES (?, ?, ?, ?, ?, ?)";
 const UPDATE_PRODUCT =
@@ -25,4 +42,5 @@ module.exports = {
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
+  GET_PRODUCT_INPUT_LIST,
 };

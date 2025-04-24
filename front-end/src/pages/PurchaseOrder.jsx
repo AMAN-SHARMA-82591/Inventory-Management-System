@@ -75,10 +75,10 @@ function PurchaseOrder() {
                   Quantity
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Purchase Date
+                  Total Cost
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Total Cost
+                  Purchase Date
                 </th>
               </tr>
             </thead>
@@ -109,10 +109,10 @@ function PurchaseOrder() {
                           {element.quantity}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-900">
-                          {new Date(element.purchase_date).toDateString()}
+                          {element.total_cost + " $"}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-900">
-                          {element.total_cost}
+                          {new Date(element.purchase_date).toDateString()}
                         </td>
                       </tr>
                     );

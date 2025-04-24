@@ -6,6 +6,7 @@ const {
   getProduct,
   updateProduct,
   deleteProduct,
+  getProductInputList,
 } = require("../controller/Product.controller");
 const { productFieldValidator } = require("../helper/productValidator");
 const validateId = require("../middlewares/validateId.middleware");
@@ -15,6 +16,7 @@ router
   .route("/")
   .get(authMiddleware, getProductList)
   .post(authMiddleware, productFieldValidator, createProduct);
+router.get("/input", authMiddleware, getProductInputList);
 router
   .route("/:id")
   .get(authMiddleware, validateId, getProduct)

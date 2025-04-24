@@ -28,7 +28,7 @@ function Inventory() {
   const fetchProductsData = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/product");
+      const response = await axiosInstance.get("/product?fieldName=all");
       if (response.data) {
         setTimeout(() => setLoading(false), 1500);
         setAllProducts(response.data.result);
@@ -221,9 +221,6 @@ function Inventory() {
                   Category Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Supplier Name
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Stock
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
@@ -258,16 +255,13 @@ function Inventory() {
                           {element.category_name}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {element.supplier_name}
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                           {element.quantity || "Not in Stock"}
                         </td>
                         <td className="px-4 py-2 text-gray-700 break-words max-w-[300px]">
                           <Markdown>{element.description}</Markdown>
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {element.price}
+                          {element.price + " $"} 
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                           <button
