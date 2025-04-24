@@ -52,14 +52,6 @@ const getPurchase = (req, res) => {
 };
 
 const createPurchase = async (req, res) => {
-  const {
-    product_id,
-    supplier_id,
-    store_id,
-    quantity,
-    purchase_date,
-    total_cost,
-  } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -68,15 +60,32 @@ const createPurchase = async (req, res) => {
       errors: errors.array(),
     });
   }
+  const {
+    product_id,
+    supplier_id,
+    store_id,
+    quantity,
+    purchase_date,
+    total_cost,
+  } = req.body;
   try {
-    const productExists = await checkIfExists("products", "id", product_id);
-    if (!productExists) {
+    const [product] = await connection
+      .promise()
+      .query(
+        "SELECT price AS prev_cost, quantity AS prev_stock FROM products WHERE id = ?",
+        product_id
+      );
+
+    if (!product.length) {
       return res.status(404).json({
         success: false,
-        field: "store_id",
-        msg: "Invalid store ID",
+        field: "product_id",
+        msg: "Invalid product ID",
       });
     }
+
+    const { prev_cost, prev_stock } = product[0];
+
     const supplierExists = await checkIfExists("suppliers", "id", supplier_id);
     if (!supplierExists) {
       return res.status(404).json({
@@ -93,20 +102,35 @@ const createPurchase = async (req, res) => {
         msg: "Invalid store ID",
       });
     }
-    connection.execute(
-      CREATE_PURCHASE,
-      [product_id, supplier_id, store_id, quantity, purchase_date, total_cost],
-      (error) => {
-        if (error) {
-          return handleDbError(error, res);
-        }
-        return res
-          .status(200)
-          .json({ success: true, msg: "New purchase created" });
-      }
-    );
+
+    await connection.promise().beginTransaction();
+
+    await connection
+      .promise()
+      .execute(CREATE_PURCHASE, [
+        product_id,
+        supplier_id,
+        store_id,
+        quantity,
+        purchase_date,
+        total_cost,
+      ]);
+
+    const newStock = prev_stock + quantity;
+    const productAvgCost = (prev_stock * prev_cost + total_cost) / total_cost;
+    await connection
+      .promise()
+      .execute("UPDATE products SET quantity = ?, price = ? WHERE id = ?", [
+        newStock,
+        productAvgCost,
+        product_id,
+      ]);
+
+    await connection.promise().commit();
+    return res.status(200).json({ success: true, msg: "New purchase created" });
   } catch (error) {
     console.error(error);
+    await connection.promise().rollback();
     return res.status(500).send("Server Error");
   }
 };

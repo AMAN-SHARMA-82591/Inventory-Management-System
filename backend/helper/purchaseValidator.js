@@ -33,12 +33,27 @@ const purchaseFieldValidator = [
     .isEmpty()
     .withMessage("Purchase Date is required!")
     .isISO8601()
-    .withMessage("Purchase Date must be a valid date in YYYY-MM-DD format!"),
+    .withMessage("Purchase Date must be a valid date in YYYY-MM-DD format!")
+    .custom((value) => {
+      const currentDate = new Date();
+      const oneYearAgo = new Date();
+      oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+      const salesDate = new Date(value);
+
+      if (salesDate > currentDate) {
+        throw new Error("Purchase Date cannot be in the future!");
+      }
+      if (salesDate < oneYearAgo) {
+        throw new Error("Purchase Date cannot be older than 1 year!");
+      }
+      return true;
+    }),
   check("total_cost", "Total Cost is required and must be a positive integer!")
     .not()
     .isEmpty()
     .withMessage("Total Cost is required!")
-    .isInt({ gt: 0 })
+    .isFloat({ gt: 0 })
     .withMessage("Total Cost must be a positive integer!"),
 ];
 

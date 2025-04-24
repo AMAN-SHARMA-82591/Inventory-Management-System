@@ -7,11 +7,13 @@ const {
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
+  GET_PRODUCT_INPUT_LIST,
 } = require("../queries/productQueries");
 
 const getProductList = (req, res) => {
+  const { fieldName } = req.query;
   try {
-    connection.query(GET_PRODUCT_LIST, (error, result) => {
+    connection.query(GET_PRODUCT_LIST(fieldName), (error, result) => {
       if (error) {
         console.error("Error fetching data:", error);
         return res
@@ -26,23 +28,49 @@ const getProductList = (req, res) => {
   }
 };
 
+const getProductInputList = (req, res) => {
+  const { filterQuantity } = req.query;
+  try {
+    connection.query(
+      GET_PRODUCT_INPUT_LIST(filterQuantity),
+      (error, result) => {
+        if (error) {
+          console.error("Error fetching data:", error);
+          return res
+            .status(400)
+            .json({ success: false, msg: "Error fetching Data" });
+        }
+        return res.status(200).json({ success: true, result });
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Server Error");
+  }
+};
+
 const getProduct = (req, res) => {
   const { id } = req.params;
+  const { fieldName } = req.query;
   try {
-    connection.query(GET_PRODUCT_BY_ID, id, (error, result) => {
-      if (error) {
-        console.error("Error fetching data:", error);
-        return res
-          .status(400)
-          .json({ success: false, msg: "Error fetching Data" });
+    connection.query(
+      GET_PRODUCT_BY_ID(fieldName || "*"),
+      id,
+      (error, result) => {
+        if (error) {
+          console.error("Error fetching data:", error);
+          return res
+            .status(400)
+            .json({ success: false, msg: "Error fetching Data" });
+        }
+        if (!result.length) {
+          return res
+            .status(404)
+            .json({ success: false, msg: "Product not found" });
+        }
+        return res.status(200).json({ success: true, result: result[0] });
       }
-      if (!result.length) {
-        return res
-          .status(404)
-          .json({ success: false, msg: "Product not found" });
-      }
-      return res.status(200).json({ success: true, result: result[0] });
-    });
+    );
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
@@ -155,4 +183,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductInputList,
 };

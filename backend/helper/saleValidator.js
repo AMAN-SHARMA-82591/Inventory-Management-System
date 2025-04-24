@@ -24,7 +24,22 @@ const saleFieldValidator = [
     .isEmpty()
     .withMessage("Sales Date is required!")
     .isISO8601()
-    .withMessage("Sales Date must be a valid date in YYYY-MM-DD format!"),
+    .withMessage("Sales Date must be a valid date in YYYY-MM-DD format!")
+    .custom((value) => {
+      const currentDate = new Date();
+      const oneYearAgo = new Date();
+      oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+      const salesDate = new Date(value);
+
+      if (salesDate > currentDate) {
+        throw new Error("Sales Date cannot be in the future!");
+      }
+      if (salesDate < oneYearAgo) {
+        throw new Error("Sales Date cannot be older than 1 year!");
+      }
+      return true;
+    }),
   check(
     "total_amount",
     "Total Amount is required and must be a positive integer!"
@@ -32,7 +47,7 @@ const saleFieldValidator = [
     .not()
     .isEmpty()
     .withMessage("Total Amount is required!")
-    .isInt({ gt: 0 })
+    .isFloat({ gt: 0 })
     .withMessage("Total Amount must be a positive integer!"),
 ];
 

@@ -112,7 +112,7 @@ function Sales() {
                           {new Date(element.sales_date).toDateString()}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          ${element.total_amount}
+                          {element.total_amount + " $"}
                         </td>
                       </tr>
                     );
