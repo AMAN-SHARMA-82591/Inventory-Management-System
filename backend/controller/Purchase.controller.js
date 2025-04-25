@@ -105,7 +105,7 @@ const createPurchase = async (req, res) => {
 
     await connection.promise().beginTransaction();
 
-    await connection
+    const [purchaseResult] = await connection
       .promise()
       .execute(CREATE_PURCHASE, [
         product_id,
@@ -115,17 +115,27 @@ const createPurchase = async (req, res) => {
         purchase_date,
         total_cost,
       ]);
-
+    if (purchaseResult.affectedRows === 0) {
+      await connection.promise().rollback();
+      return res
+        .status(500)
+        .json({ success: false, msg: "Failed to create purchase record." });
+    }
     const newStock = prev_stock + quantity;
     const productAvgCost = (prev_stock * prev_cost + total_cost) / total_cost;
-    await connection
+    const [productUpdateResult] = await connection
       .promise()
       .execute("UPDATE products SET quantity = ?, price = ? WHERE id = ?", [
         newStock,
         productAvgCost,
         product_id,
       ]);
-
+    if (productUpdateResult.affectedRows === 0) {
+      await connection.promise().rollback();
+      return res
+        .status(500)
+        .json({ success: false, msg: "Failed to update product." });
+    }
     await connection.promise().commit();
     return res.status(200).json({ success: true, msg: "New purchase created" });
   } catch (error) {
@@ -136,6 +146,14 @@ const createPurchase = async (req, res) => {
 };
 
 const updatePurchase = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      msg: "Errors",
+      errors: errors.array(),
+    });
+  }
   const {
     params: { id },
     body: {
@@ -172,6 +190,7 @@ const updatePurchase = async (req, res) => {
         msg: "Invalid store ID",
       });
     }
+    // Need to fix the update when we're going to enable update functionality.
     connection.execute(
       UPDATE_PURCHASE,
       [

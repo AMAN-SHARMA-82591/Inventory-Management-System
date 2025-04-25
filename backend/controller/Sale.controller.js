@@ -107,7 +107,7 @@ const createSale = async (req, res) => {
 
     await connection.promise().beginTransaction();
 
-    await connection
+    const [createSaleResult] = await connection
       .promise()
       .execute(CREATE_SALE, [
         product_id,
@@ -116,15 +116,25 @@ const createSale = async (req, res) => {
         sales_date,
         total_amount,
       ]);
-
+    if (createSaleResult.affectedRows === 0) {
+      connection.promise().rollback();
+      return res
+        .status(500)
+        .json({ success: false, msg: "Failed to create sale record." });
+    }
     const newStock = stock - quantity;
-    await connection
+    const [updateProduct] = await connection
       .promise()
       .execute("UPDATE products SET quantity = ? WHERE id = ?", [
         newStock,
         product_id,
       ]);
-
+    if (updateProduct.affectedRows === 0) {
+      connection.promise().rollback();
+      return res
+        .status(500)
+        .json({ success: false, msg: "Failed to update product record." });
+    }
     await connection.promise().commit();
 
     return res.status(200).json({ success: true, msg: "New sale created" });
