@@ -14,14 +14,14 @@ function Inventory() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateProduct, setUpdateProduct] = useState([]);
   const [products, setAllProducts] = useState([]);
+  const [inventory, setInventoryData] = useState({});
   const [searchTerm, setSearchTerm] = useState();
   const [updatePage, setUpdatePage] = useState(true);
-  const [stores, setAllStores] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchProductsData();
-    // fetchSalesData();
+    fetchOverallInventoryData();
   }, [updatePage]);
 
   // Fetching Data of All Products
@@ -32,6 +32,20 @@ function Inventory() {
       if (response.data) {
         setTimeout(() => setLoading(false), 1500);
         setAllProducts(response.data.result);
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  // Fetching Overall Inventory Data
+  const fetchOverallInventoryData = async () => {
+    // setLoading(true);
+    try {
+      const response = await axiosInstance.get("/product/overall-inventory");
+      if (response.data) {
+        // setTimeout(() => setLoading(false), 1500);
+        setInventoryData(response.data.result);
       }
     } catch (error) {
       handleError(error);
@@ -97,10 +111,10 @@ function Inventory() {
                 Total Products
               </span>
               <span className="font-semibold text-gray-600 text-base">
-                {products.length}
+                {inventory?.total_products ?? 0}
               </span>
               <span className="font-thin text-gray-400 text-xs">
-                Last 7 days
+                Last 30 days
               </span>
             </div>
             <div className="flex flex-col gap-3 p-10   w-full  md:w-3/12 sm:border-y-2  md:border-x-2 md:border-y-0">
@@ -110,15 +124,15 @@ function Inventory() {
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    {stores.length}
+                    {inventory?.revenue?.total_stores ?? 0}
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
-                    Last 7 days
+                    Stores
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    $2000
+                    {inventory?.revenue?.total_revenue ?? 0} $
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
                     Revenue
@@ -128,20 +142,20 @@ function Inventory() {
             </div>
             <div className="flex flex-col gap-3 p-10  w-full  md:w-3/12  sm:border-y-2 md:border-x-2 md:border-y-0">
               <span className="font-semibold text-purple-600 text-base">
-                Top Selling
+                Top Selling (Top-5)
               </span>
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    5
+                    {inventory?.topSelling?.total_sold_items ?? 0}
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
-                    Last 7 days
+                    Items Sold
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    $1500
+                    {inventory?.topSelling?.total_sales_value ?? 0} $
                   </span>
                   <span className="font-thin text-gray-400 text-xs">Cost</span>
                 </div>
@@ -154,15 +168,7 @@ function Inventory() {
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    12
-                  </span>
-                  <span className="font-thin text-gray-400 text-xs">
-                    Ordered
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-gray-600 text-base">
-                    2
+                    {inventory?.not_in_stock ?? 0}
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
                     Not in Stock
@@ -261,7 +267,7 @@ function Inventory() {
                           <Markdown>{element.description}</Markdown>
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {element.price + " $"} 
+                          {element.price + " $"}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                           <button
