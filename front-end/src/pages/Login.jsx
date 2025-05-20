@@ -24,7 +24,7 @@ function Login() {
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      fetch("http://localhost:5001/auth/login", {
+      fetch(`${import.meta.env.VITE_BACKEND_HOST}/auth/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
