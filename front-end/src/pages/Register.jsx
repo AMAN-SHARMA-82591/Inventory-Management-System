@@ -23,7 +23,7 @@ function Register() {
 
   // Register User
   const registerUser = () => {
-    fetch("http://localhost:4000/api/register", {
+    fetch(`${import.meta.env.VITE_BACKEND_HOST}/auth/register`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
