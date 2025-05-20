@@ -101,7 +101,7 @@ function Inventory() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
+    <div className="col-span-12 lg:col-span-10 gap-6 flex justify-center">
       <div className=" flex flex-col gap-5 w-11/12">
         <div className="bg-white rounded p-3">
           <span className="font-semibold px-4">Overall Inventory</span>
