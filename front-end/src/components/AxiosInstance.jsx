@@ -1,7 +1,8 @@
 import axios from "axios";
 
+console.log(import.meta.env);
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.BACKEND_HOST || "http://localhost:5001",
+  baseURL: import.meta.env.VITE_BACKEND_HOST || "http://localhost:5001",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
