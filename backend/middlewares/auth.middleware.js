@@ -2,8 +2,6 @@ const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   const { token } = req.signedCookies;
-  // const jwtToken = req.headers.authorization?.split(" ")[1];
-
   if (!token) {
     res.clearCookie("token");
     return res
@@ -18,10 +16,14 @@ module.exports = (req, res, next) => {
     const currentTime = Math.round(Date.now() / 1000);
     if (currentTime > expiry) {
       res.clearCookie("token");
-      return res.status(401).json({ error: "Not Logged in!" });
+      return res
+        .status(401)
+        .json({
+          success: false,
+          msg: "Your session has expired. Please log in again.",
+        });
     }
 
-    // const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
     req.user = entities;
     return next();
   } catch (error) {

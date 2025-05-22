@@ -13,8 +13,10 @@ import logoImage from "../assets/logo.png";
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
   { name: "Inventory", href: "/inventory", current: false },
-  { name: "Purchase Details", href: "/purchase-details", current: false },
+  { name: "Product Category", href: "/product-category", current: false },
+  { name: "Supplier Directory", href: "/supplier-directory", current: false },
   { name: "Sales", href: "/sales", current: false },
+  { name: "Purchase", href: "/purchase", current: false },
   { name: "Manage Store", href: "/manage-store", current: false },
 ];
 
@@ -81,19 +83,13 @@ export default function Header() {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <Link
-                                    to={item.href}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    <span onClick={() => authContext.signout()}>
-                                      {item.name}{" "}
-                                    </span>
-                                  </Link>
-                                )}
+                                <button
+                                  type="button"
+                                  onClick={authContext.signout}
+                                  className="block w-full px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                >
+                                  {item.name}{" "}
+                                </button>
                               </Menu.Item>
                             ))}
                           </Menu.Items>
@@ -146,10 +142,10 @@ export default function Header() {
                   <div className="flex items-center px-5">
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
-                        {authContext?.user?.username || 'user' + " "}
+                        {authContext?.user?.username || "user" + " "}
                       </div>
                       <div className="text-sm font-medium leading-none text-gray-400">
-                        {authContext?.user?.email || 'user@gmail.com'}
+                        {authContext?.user?.email || "user@gmail.com"}
                       </div>
                     </div>
                     <button
@@ -160,17 +156,16 @@ export default function Header() {
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="mt-3 space-y-1 px-2">
+                  <div className="mt-3 w-full space-y-1 px-2">
                     {userNavigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
-                        as="a"
-                        href={item.href}
+                        as="button"
+                        type="button"
+                        onClick={authContext.signout}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
-                        <span onClick={() => authContext.signout()}>
-                          {item.name}{" "}
-                        </span>
+                        {item.name}{" "}
                       </Disclosure.Button>
                     ))}
                   </div>

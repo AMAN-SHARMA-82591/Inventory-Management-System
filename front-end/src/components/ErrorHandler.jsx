@@ -1,19 +1,22 @@
+import axiosInstance from "./AxiosInstance";
 import { toastError } from "./ToastContainer";
 
-export const handleError = (error) => {
+export const handleError = async (error) => {
   if (error.response) {
     // Handle server errors
     if (error.response.status === 400) {
       toastError(`Validation Error: ${error.response.data.msg}`);
-      console.log('ErrorHandler', error.response);
     } else if (error.response.status === 401) {
       // Handle authentication errors
-      if (
-        error.response.data.msg === "Token has expired. Please log in again."
-      ) {
-        toastError("Your session has expired. Please log in again.");
-        localStorage.removeItem("user"); // Clear token from localStorage
-        window.location.href = "/login"; // Redirect to login page
+      if (error.response.status === 401) {
+        if (window.location.pathname !== "/login") {
+          toastError("Your session has expired. Please log in again.");
+          await axiosInstance.post("/auth/logout");
+          localStorage.removeItem("user");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 3000);
+        }
       } else {
         toastError("Authentication failed. Please log in.");
       }

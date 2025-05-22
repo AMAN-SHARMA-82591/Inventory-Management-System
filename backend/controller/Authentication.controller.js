@@ -76,9 +76,11 @@ const register = (req, res) => {
                 //     expiresIn: "1d",
                 //   }
                 // );
-                return res
-                  .status(201)
-                  .json({ success: true, msg: "New user created!" });
+                return res.status(201).json({
+                  success: true,
+                  msg: "New user created!",
+                  user: user[0],
+                });
               } else {
                 console.error("Error inserting data:", error);
                 return res
@@ -155,4 +157,9 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({ msg: "Logout successful" });
+};
+
+module.exports = { register, login, logout };
