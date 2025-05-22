@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const cookieparser = require("cookie-parser");
 
 const app = express();
 require("./config/db");
 
 const allowedOrigins = process.env.FRONTEND_URL.split(",");
 
+app.use(cookieparser(process.env.JWT_SECRET));
 app.use(express.json());
 app.use(
   cors({

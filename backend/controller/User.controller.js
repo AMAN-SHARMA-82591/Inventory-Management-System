@@ -25,7 +25,7 @@ const getUser = (req, res) => {
   const { id } = req.params;
   try {
     connection.query(
-      "SELECT id, username, email, role, created_at, updated_at FROM USERS WHERE id=?",
+      "SELECT id, username, email, role, created_at, updated_at FROM users WHERE id=?",
       id,
       (error, result) => {
         if (error) {
