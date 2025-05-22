@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { jwtDecode } from "jwt-decode";
 import Login from "./pages/Login";
 import Sales from "./pages/Sales";
 import Store from "./pages/Store";
@@ -16,30 +15,34 @@ import { ToastContainer } from "react-toastify";
 import ProductCategory from "./pages/ProductCategory";
 import ClipLoader from "react-spinners/ClipLoader";
 import PurchaseOrder from "./pages/PurchaseOrder";
+import axiosInstance from "./components/AxiosInstance";
 
 function App() {
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    let myLoginToken = localStorage.getItem("user");
+    let myLoginToken = JSON.parse(localStorage.getItem("user"));
     if (myLoginToken) {
-      myLoginToken = jwtDecode(myLoginToken);
       setUser(myLoginToken);
     } else {
-      setUser("");
+      setUser(null);
     }
     setTimeout(() => setLoading(false), 2000);
   }, []);
 
   const signin = (newUser, callback) => {
-    const decodedToken = jwtDecode(newUser);
-    setUser(decodedToken);
+    setUser(newUser);
     callback();
   };
 
-  const signout = () => {
+  const signout = async () => {
     setUser(null);
-    localStorage.removeItem("user");
+    try {
+      await axiosInstance.post("/auth/logout");
+      localStorage.removeItem("user");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   let value = { user, signin, signout };

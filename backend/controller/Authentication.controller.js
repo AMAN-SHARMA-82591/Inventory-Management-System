@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const connection = require("../config/db");
-const { ROLES } = require("../utils/staticData");
+const { ROLES, expirySeconds } = require("../utils/staticData");
 
 const register = (req, res) => {
   const { username, email, password, role = "staff" } = req.body;
@@ -42,21 +42,51 @@ const register = (req, res) => {
           connection.execute(
             "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
             [username, email, encryptPassword, role],
-            (error, result) => {
+            async (error, result) => {
               if (error) {
                 console.error("Error inserting data:", error);
                 return res
                   .status(400)
                   .json({ success: false, msg: "Error Inserting Data" });
               }
-              const token = jwt.sign(
-                { username, email, role },
-                process.env.JWT_SECRET,
-                {
-                  expiresIn: "1d",
-                }
-              );
-              return res.status(201).json({ success: true, result, token });
+              if (result.affectedRows) {
+                const [user] = await connection
+                  .promise()
+                  .query(
+                    "SELECT id, username, email, role, created_at, updated_at FROM users WHERE email=?",
+                    email
+                  );
+                const cookiePayload = JSON.stringify({
+                  ...user[0],
+                  expiry: Math.round(Date.now() / 1000 + expirySeconds),
+                });
+                res.cookie(
+                  "token",
+                  Buffer.from(cookiePayload).toString("base64url"),
+                  {
+                    httpOnly: true,
+                    signed: true,
+                    maxAge: expirySeconds * 1000, // in miliseconds
+                  }
+                );
+                // const token = jwt.sign(
+                //   { username, email, role },
+                //   process.env.JWT_SECRET,
+                //   {
+                //     expiresIn: "1d",
+                //   }
+                // );
+                return res.status(201).json({
+                  success: true,
+                  msg: "New user created!",
+                  user: user[0],
+                });
+              } else {
+                console.error("Error inserting data:", error);
+                return res
+                  .status(400)
+                  .json({ success: false, msg: "Error Inserting Data" });
+              }
             }
           );
         }
@@ -100,12 +130,22 @@ const login = async (req, res) => {
             .json({ success: false, msg: "Invalid password" });
         }
         if (result.length) {
-          const token = jwt.sign({ ...entities }, process.env.JWT_SECRET, {
-            expiresIn: "1d",
+          const cookiePayload = JSON.stringify({
+            ...entities,
+            expiry: Math.round(Date.now() / 1000 + expirySeconds),
           });
+          res.cookie(
+            "token",
+            Buffer.from(cookiePayload).toString("base64url"),
+            {
+              httpOnly: true,
+              signed: true,
+              maxAge: expirySeconds * 1000, // in miliseconds
+            }
+          );
           return res
             .status(200)
-            .json({ success: true, msg: "Login Successful", token });
+            .json({ success: true, msg: "Login Successful", user: entities });
         }
       }
     );
@@ -117,4 +157,9 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({ msg: "Logout successful" });
+};
+
+module.exports = { register, login, logout };

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router";
 import UploadImage from "../components/UploadImage";
 import logo from "../assets/logo.png";
 import loginImage from "../assets/Login.png";
+import axiosInstance from "../components/AxiosInstance";
+import { toastError, toastSuccess } from "../components/ToastContainer";
 
 function Register() {
   const [form, setForm] = useState({
@@ -22,39 +24,41 @@ function Register() {
   };
 
   // Register User
-  const registerUser = () => {
-    fetch(`${import.meta.env.VITE_BACKEND_HOST}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(form),
-    })
-      .then(() => {
-        alert("Successfully Registered, Now Login with your details");
+  const registerUser = async () => {
+    try {
+      const response = await axiosInstance.post(
+        "/auth/register",
+        JSON.stringify(form)
+      );
+      if (response.data) {
+        toastSuccess("Successfully Registered, Now Login with your details");
         navigate("/login");
-      })
-      .catch((err) => console.log(err));
+      }
+    } catch (error) {
+      toastError("Something went wrong");
+      console.error(error);
+    }
   };
+
   // ------------------
 
   // Uploading image to cloudinary
-  const uploadImage = async (image) => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "inventoryapp");
+  // const uploadImage = async (image) => {
+  //   const data = new FormData();
+  //   data.append("file", image);
+  //   data.append("upload_preset", "inventoryapp");
 
-    await fetch("https://api.cloudinary.com/v1_1/ddhayhptm/image/upload", {
-      method: "POST",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setForm({ ...form, imageUrl: data.url });
-        alert("Image Successfully Uploaded");
-      })
-      .catch((error) => console.log(error));
-  };
+  //   await fetch("https://api.cloudinary.com/v1_1/ddhayhptm/image/upload", {
+  //     method: "POST",
+  //     body: data,
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setForm({ ...form, imageUrl: data.url });
+  //       alert("Image Successfully Uploaded");
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -138,7 +142,7 @@ function Register() {
               {/* <UploadImage uploadImage={uploadImage} /> */}
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -161,7 +165,7 @@ function Register() {
                   Forgot your password?
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
@@ -180,8 +184,9 @@ function Register() {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Already Have an Account, Please
-                  <Link to="/login"> Signin now </Link>
+                  <Link to="/login">
+                    Already Have an Account, Please Signin now
+                  </Link>
                 </span>
               </p>
             </div>

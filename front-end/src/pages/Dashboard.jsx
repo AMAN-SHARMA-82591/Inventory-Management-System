@@ -61,13 +61,17 @@ function Dashboard() {
       {
         name: "Type",
         data: dashboardData.totalSalesAndPurchase
-          ? dashboardData?.totalSalesAndPurchase.filter((value) => value.type === 'purchase').map((value) => value.amount)
+          ? dashboardData?.totalSalesAndPurchase
+              .filter((value) => value.type === "purchase")
+              .map((value) => value.amount)
           : [],
       },
       {
         name: "Price",
         data: dashboardData.totalSalesAndPurchase
-          ? dashboardData?.totalSalesAndPurchase.filter((value) => value.type === 'sale').map((value) => value.amount)
+          ? dashboardData?.totalSalesAndPurchase
+              .filter((value) => value.type === "sale")
+              .map((value) => value.amount)
           : [],
       },
     ],
@@ -212,7 +216,7 @@ function Dashboard() {
           </div>
         </article>
         <div className="flex flex-wrap bg-white rounded-lg py-8 col-span-full justify-around">
-          <div>
+          <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5"> Top Products </h1>
             <Chart
               options={barChartData.options}
@@ -221,12 +225,12 @@ function Dashboard() {
               width="500"
             />
           </div>
-          <div>
+          <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5">Total Category</h1>
             <Doughnut data={dognutChartData} />
           </div>
-          <div className="mt-20">
-            <h1 className="text-3xl mb-5">Total Category</h1>
+          <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
+            <h1 className="text-3xl mb-5">Sales and Purchases</h1>
             <Chart
               options={lineChartData.options}
               series={lineChartData.series}

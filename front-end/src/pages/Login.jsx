@@ -5,6 +5,7 @@ import AuthContext from "../AuthContext";
 import signupImage from "../assets/signup.jpg";
 import logoImage from "../assets/logo.png";
 import { toastSuccess } from "../components/ToastContainer";
+import axiosInstance from "../components/AxiosInstance";
 
 function Login() {
   const [form, setForm] = useState({
@@ -19,33 +20,29 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const loginUser = () => {
+  const loginUser = async () => {
     // Cannot send empty data
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      fetch(`${import.meta.env.VITE_BACKEND_HOST}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(form),
-      })
-        .then((response) => response.json())
-        .then((data) => {
+      try {
+        const response = await axiosInstance.post(
+          "/auth/login",
+          JSON.stringify(form)
+        );
+        if (response.data) {
           toastSuccess("Successfully Login");
-          if (data && data.token) {
-            localStorage.setItem("user", `Bearer ${data.token}`);
-            authContext.signin(data.token, () => {
+          if (response.data && response?.data.user) {
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            authContext.signin(response.data.user, () => {
               navigate("/");
             });
           }
-        })
-        .catch((error) => {
-          console.log("Something went wrong ", error);
-        });
+        }
+      } catch (error) {
+        console.error("Something went wrong ", error);
+      }
     }
-    // authCheck();
   };
 
   const handleSubmit = (e) => {
@@ -68,12 +65,12 @@ function Login() {
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Signin to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            {/* <p className="mt-2 text-center text-sm text-gray-600">
               Or
               <span className="font-medium text-indigo-600 hover:text-indigo-500">
                 start your 14-day free trial
               </span>
-            </p>
+            </p> */}
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {/* <input type="hidden" name="remember" defaultValue="true" /> */}
@@ -112,7 +109,7 @@ function Login() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -133,7 +130,7 @@ function Login() {
                   Forgot your password?
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
@@ -152,8 +149,10 @@ function Login() {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Don't Have an Account, Please{" "}
-                  <Link to="/register"> Register now </Link>
+                  <Link to="/register">
+                    {" "}
+                    Don't Have an Account, PleaseRegister now{" "}
+                  </Link>
                 </span>
               </p>
             </div>

@@ -1,15 +1,30 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const { token } = req.signedCookies;
   if (!token) {
+    res.clearCookie("token");
     return res
       .status(401)
       .json({ success: false, msg: "No token, authorization denied" });
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    const { expiry, ...entities } = JSON.parse(
+      Buffer.from(token, "base64url").toString()
+    );
+
+    const currentTime = Math.round(Date.now() / 1000);
+    if (currentTime > expiry) {
+      res.clearCookie("token");
+      return res
+        .status(401)
+        .json({
+          success: false,
+          msg: "Your session has expired. Please log in again.",
+        });
+    }
+
+    req.user = entities;
     return next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
@@ -20,6 +35,7 @@ module.exports = (req, res, next) => {
         expiredAt: error.expiredAt, // Optional: Include the expiration time
       });
     }
+    res.clearCookie("token");
     console.error("Something went wrong", error);
     return res.status(401).json({ success: false, msg: "Token is not valid!" });
   }
