@@ -29,6 +29,7 @@ function Login() {
         headers: {
           "Content-type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(form),
       })
         .then((response) => response.json())
@@ -68,12 +69,12 @@ function Login() {
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Signin to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            {/* <p className="mt-2 text-center text-sm text-gray-600">
               Or
               <span className="font-medium text-indigo-600 hover:text-indigo-500">
                 start your 14-day free trial
               </span>
-            </p>
+            </p> */}
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {/* <input type="hidden" name="remember" defaultValue="true" /> */}
@@ -112,7 +113,7 @@ function Login() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -133,7 +134,7 @@ function Login() {
                   Forgot your password?
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
@@ -150,10 +151,9 @@ function Login() {
                 Sign in
               </button>
               <p className="mt-2 text-center text-sm text-gray-600">
-                Or{" "}
+                Or {" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Don't Have an Account, Please{" "}
-                  <Link to="/register"> Register now </Link>
+                  <Link to="/register"> Don't Have an Account, PleaseRegister now </Link>
                 </span>
               </p>
             </div>

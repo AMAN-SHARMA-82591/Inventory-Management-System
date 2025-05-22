@@ -1,6 +1,11 @@
 import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, UserCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  BellIcon,
+  UserCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
 import { Link } from "react-router";
 import logoImage from "../assets/logo.png";
@@ -21,7 +26,6 @@ function classNames(...classes) {
 
 export default function Header() {
   const authContext = useContext(AuthContext);
-  const localStorageData = localStorage.getItem("user");
   return (
     <>
       <div className="min-h-full">
@@ -59,7 +63,10 @@ export default function Header() {
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <UserCircleIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                            <UserCircleIcon
+                              className="h-6 w-6 text-gray-400"
+                              aria-hidden="true"
+                            />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -139,12 +146,10 @@ export default function Header() {
                   <div className="flex items-center px-5">
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
-                        {localStorageData.firstName +
-                          " " +
-                          localStorageData.lastName}
+                        {authContext?.user?.username || 'user' + " "}
                       </div>
                       <div className="text-sm font-medium leading-none text-gray-400">
-                        {localStorageData.email}
+                        {authContext?.user?.email || 'user@gmail.com'}
                       </div>
                     </div>
                     <button

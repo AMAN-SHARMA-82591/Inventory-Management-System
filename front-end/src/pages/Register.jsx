@@ -28,6 +28,7 @@ function Register() {
       headers: {
         "Content-type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(form),
     })
       .then(() => {
@@ -138,7 +139,7 @@ function Register() {
               {/* <UploadImage uploadImage={uploadImage} /> */}
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -161,7 +162,7 @@ function Register() {
                   Forgot your password?
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
@@ -180,8 +181,9 @@ function Register() {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Already Have an Account, Please
-                  <Link to="/login"> Signin now </Link>
+                  <Link to="/login">
+                    Already Have an Account, Please Signin now
+                  </Link>
                 </span>
               </p>
             </div>
