@@ -67,6 +67,8 @@ const register = (req, res) => {
                     httpOnly: true,
                     signed: true,
                     maxAge: expirySeconds * 1000, // in miliseconds
+                    sameSite: "None",
+                    secure: true,
                   }
                 );
                 // const token = jwt.sign(
@@ -141,6 +143,8 @@ const login = async (req, res) => {
               httpOnly: true,
               signed: true,
               maxAge: expirySeconds * 1000, // in miliseconds
+              sameSite: "None",
+              secure: true,
             }
           );
           return res
