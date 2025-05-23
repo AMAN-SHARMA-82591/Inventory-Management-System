@@ -28,7 +28,7 @@ function Store() {
     try {
       const response = await axiosInstance.get("/store");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setAllStores(response.data.result);
       }
     } catch (error) {

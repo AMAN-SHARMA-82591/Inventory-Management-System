@@ -23,7 +23,7 @@ function Sales() {
     try {
       const response = await axiosInstance.get("/sale");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setAllSalesData(response.data.result);
       }
     } catch (error) {

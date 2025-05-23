@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 import ClipLoader from "react-spinners/ClipLoader";
 import AddProduct from "../components/AddProduct";
@@ -30,7 +30,7 @@ function Inventory() {
     try {
       const response = await axiosInstance.get("/product?fieldName=all");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setAllProducts(response.data.result);
       }
     } catch (error) {
@@ -40,11 +40,9 @@ function Inventory() {
 
   // Fetching Overall Inventory Data
   const fetchOverallInventoryData = async () => {
-    // setLoading(true);
     try {
       const response = await axiosInstance.get("/product/overall-inventory");
       if (response.data) {
-        // setTimeout(() => setLoading(false), 1500);
         setInventoryData(response.data.result);
       }
     } catch (error) {

@@ -24,7 +24,7 @@ function SupplierDirectory() {
     try {
       const response = await axiosInstance.get("/supplier");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setSupplierList(response.data.result);
       }
     } catch (error) {

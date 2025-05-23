@@ -19,7 +19,7 @@ function PurchaseOrder() {
     try {
       const response = await axiosInstance.get("/purchase");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setPurchaseList(response.data.result);
       }
     } catch (error) {

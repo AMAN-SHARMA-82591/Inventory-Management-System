@@ -27,7 +27,7 @@ function App() {
     } else {
       setUser(null);
     }
-    setTimeout(() => setLoading(false), 2000);
+    setLoading(false);
   }, []);
 
   const signin = (newUser, callback) => {
