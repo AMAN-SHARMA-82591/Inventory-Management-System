@@ -23,7 +23,7 @@ function Sales() {
     try {
       const response = await axiosInstance.get("/sale");
       if (response.data) {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
         setAllSalesData(response.data.result);
       }
     } catch (error) {
@@ -42,8 +42,8 @@ function Sales() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
-      <div className=" flex flex-col gap-5 w-11/12">
+    <div className="grid grid-cols-1 p-4 col-span-12 lg:col-span-10 mt-16 md:mt-0">
+      <div className=" flex flex-col gap-5">
         {showSaleModal && (
           <AddSale
             addSaleModalSetting={addSaleModalSetting}

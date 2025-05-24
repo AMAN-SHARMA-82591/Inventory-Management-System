@@ -6,12 +6,15 @@ import signupImage from "../assets/signup.jpg";
 import logoImage from "../assets/logo.png";
 import { toastSuccess } from "../components/ToastContainer";
 import axiosInstance from "../components/AxiosInstance";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ function Login() {
   };
 
   const loginUser = async () => {
-    // Cannot send empty data
+    setLoading(true);
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
@@ -38,11 +41,19 @@ function Login() {
               navigate("/");
             });
           }
+        } else {
+          localStorage.removeItem("user");
+          setErrorMsg("Unexpected error. Please try after some time");
         }
       } catch (error) {
-        console.error("Something went wrong ", error);
+        localStorage.removeItem("user");
+        setErrorMsg(
+          error?.response?.data?.msg ??
+            "Unexpected error. Please try after some time"
+        );
       }
     }
+    setLoading(false);
   };
 
   const handleSubmit = (e) => {
@@ -108,6 +119,7 @@ function Login() {
                 />
               </div>
             </div>
+            {errorMsg && <p className="text-red-500 mb-1">{errorMsg}</p>}
 
             {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -144,14 +156,14 @@ function Login() {
                     aria-hidden="true"
                   /> */}
                 </span>
-                Sign in
+                {loading ? <ClipLoader color="#ffff" size={20} /> : "Sign in"}
               </button>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
                   <Link to="/register">
                     {" "}
-                    Don't Have an Account, PleaseRegister now{" "}
+                    Don't Have an Account, Please Register now{" "}
                   </Link>
                 </span>
               </p>

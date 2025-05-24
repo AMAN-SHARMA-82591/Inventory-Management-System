@@ -1,22 +1,25 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import UploadImage from "../components/UploadImage";
+// import UploadImage from "../components/UploadImage";
 import logo from "../assets/logo.png";
 import loginImage from "../assets/Login.png";
 import axiosInstance from "../components/AxiosInstance";
-import { toastError, toastSuccess } from "../components/ToastContainer";
+import { toastSuccess } from "../components/ToastContainer";
+import ClipLoader from "react-spinners/ClipLoader";
+import { useContext } from "react";
+import AuthContext from "../AuthContext";
 
 function Register() {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
+    username: "",
     email: "",
     password: "",
-    phoneNumber: "",
-    imageUrl: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   // Handling Input change for registration form.
   const handleInputChange = (e) => {
@@ -25,6 +28,7 @@ function Register() {
 
   // Register User
   const registerUser = async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.post(
         "/auth/register",
@@ -32,12 +36,21 @@ function Register() {
       );
       if (response.data) {
         toastSuccess("Successfully Registered, Now Login with your details");
-        navigate("/login");
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        authContext.signin(response.data.user, () => {
+          navigate("/");
+        });
+      } else {
+        localStorage.removeItem("user");
+        setErrorMsg("Unexpected error. Please try after some time");
       }
     } catch (error) {
-      toastError("Something went wrong");
-      console.error(error);
+      setErrorMsg(
+        error?.response?.data?.msg ??
+          "Unexpected error. Please try after some time"
+      );
     }
+    setLoading(false);
   };
 
   // ------------------
@@ -81,23 +94,14 @@ function Register() {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {/* <input type="hidden" name="remember" defaultValue="true"  /> */}
             <div className="flex flex-col gap-4 -space-y-px rounded-md shadow-sm">
-              <div className="flex gap-4">
+              <div>
                 <input
-                  name="firstName"
+                  name="username"
                   type="text"
                   required
                   className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="First Name"
-                  value={form.firstName}
-                  onChange={handleInputChange}
-                />
-                <input
-                  name="lastName"
-                  type="text"
-                  required
-                  className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="Last Name"
-                  value={form.lastName}
+                  placeholder="User Name"
+                  value={form.username}
                   onChange={handleInputChange}
                 />
               </div>
@@ -124,18 +128,6 @@ function Register() {
                   className="relative block w-full rounded-b-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Password"
                   value={form.password}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <input
-                  name="phoneNumber"
-                  type="number"
-                  autoComplete="phoneNumber"
-                  required
-                  className="relative block w-full rounded-b-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="Phone Number"
-                  value={form.phoneNumber}
                   onChange={handleInputChange}
                 />
               </div>
@@ -166,7 +158,7 @@ function Register() {
                 </span>
               </div>
             </div> */}
-
+            {errorMsg && <p className="text-red-500 mb-1">{errorMsg}</p>}
             <div>
               <button
                 type="submit"
@@ -179,13 +171,13 @@ function Register() {
                       aria-hidden="true"
                     /> */}
                 </span>
-                Sign up
+                {loading ? <ClipLoader color="#ffff" size={20} /> : "Sign up"}
               </button>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
                   <Link to="/login">
-                    Already Have an Account, Please Signin now
+                    Already Have an Account, Please Sign-in now
                   </Link>
                 </span>
               </p>

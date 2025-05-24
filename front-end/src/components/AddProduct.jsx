@@ -185,7 +185,7 @@ export default function AddProduct({
                         </div>
                         <div>
                           <label
-                            for="price"
+                            htmlFor="price"
                             className="block mb-2 text-sm font-medium text-gray-900"
                           >
                             Price
@@ -204,7 +204,7 @@ export default function AddProduct({
                         </div>
                         <div>
                           <label
-                            for="quantity"
+                            htmlFor="quantity"
                             className="block mb-2 text-sm font-medium text-gray-900"
                           >
                             Quantity

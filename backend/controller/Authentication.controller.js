@@ -71,13 +71,6 @@ const register = (req, res) => {
                     secure: true,
                   }
                 );
-                // const token = jwt.sign(
-                //   { username, email, role },
-                //   process.env.JWT_SECRET,
-                //   {
-                //     expiresIn: "1d",
-                //   }
-                // );
                 return res.status(201).json({
                   success: true,
                   msg: "New user created!",
@@ -116,40 +109,44 @@ const login = async (req, res) => {
       "Select * FROM users WHERE email = ?",
       email,
       async (error, result) => {
-        const { password: userPassword, ...entities } = result[0];
         if (error) {
           console.error("error", error);
+          return res
+            .status(500)
+            .json({ msg: "There's an issue while login. Please try again." });
         }
         if (!result.length) {
           return res
             .status(404)
-            .json({ success: false, msg: "User not found" });
-        }
-        const isPasswordMatch = await bcrypt.compare(password, userPassword);
-        if (!isPasswordMatch) {
-          return res
-            .status(401)
-            .json({ success: false, msg: "Invalid password" });
-        }
-        if (result.length) {
-          const cookiePayload = JSON.stringify({
-            ...entities,
-            expiry: Math.round(Date.now() / 1000 + expirySeconds),
-          });
-          res.cookie(
-            "token",
-            Buffer.from(cookiePayload).toString("base64url"),
-            {
-              httpOnly: true,
-              signed: true,
-              maxAge: expirySeconds * 1000, // in miliseconds
-              sameSite: "None",
-              secure: true,
-            }
-          );
-          return res
-            .status(200)
-            .json({ success: true, msg: "Login Successful", user: entities });
+            .json({ success: false, msg: "User not found." });
+        } else {
+          const { password: userPassword, ...entities } = result[0];
+          const isPasswordMatch = await bcrypt.compare(password, userPassword);
+          if (!isPasswordMatch) {
+            return res
+              .status(401)
+              .json({ success: false, msg: "Invalid password" });
+          }
+          if (result.length) {
+            const cookiePayload = JSON.stringify({
+              ...entities,
+              expiry: Math.round(Date.now() / 1000 + expirySeconds),
+            });
+            res.cookie(
+              "token",
+              Buffer.from(cookiePayload).toString("base64url"),
+              {
+                httpOnly: true,
+                signed: true,
+                maxAge: expirySeconds * 1000, // in miliseconds
+                sameSite: "None",
+                secure: true,
+              }
+            );
+            return res
+              .status(200)
+              .json({ success: true, msg: "Login Successful", user: entities });
+          }
         }
       }
     );
@@ -162,7 +159,11 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
   return res.status(200).json({ msg: "Logout successful" });
 };
 
