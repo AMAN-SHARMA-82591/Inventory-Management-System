@@ -36,8 +36,8 @@ function PurchaseOrder() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
-      <div className=" flex flex-col gap-5 w-11/12">
+    <div className="grid grid-cols-1col-span-12 lg:col-span-10 mt-16 md:mt-0 p-4">
+      <div className=" flex flex-col gap-5">
         {showPurchaseModal && (
           <AddPurchase
             addPurchaseModalSetting={addPurchaseModalSetting}

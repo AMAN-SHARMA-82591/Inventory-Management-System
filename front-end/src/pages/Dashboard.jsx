@@ -112,7 +112,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 md:grid-cols-3 lg:grid-cols-4  p-4 ">
+      <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 mt-16 md:mt-0 md:grid-cols-3 lg:grid-cols-4 p-4">
         <article className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
           {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
@@ -215,7 +215,9 @@ function Dashboard() {
             </p>
           </div>
         </article>
-        <div className="flex flex-wrap bg-white rounded-lg py-8 col-span-full justify-around">
+      </div>
+      <div className="flex flex-wrap gap-4 p-4 justify-evenly ">
+        <div className="bg-white rounded-lg py-8">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5"> Top Products </h1>
             <Chart
@@ -225,10 +227,8 @@ function Dashboard() {
               width="500"
             />
           </div>
-          <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
-            <h1 className="text-3xl mb-5">Total Category</h1>
-            <Doughnut data={dognutChartData} />
-          </div>
+        </div>
+        <div className="bg-white rounded-lg py-8">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5">Sales and Purchases</h1>
             <Chart
@@ -237,6 +237,12 @@ function Dashboard() {
               type="line"
               width="500"
             />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg py-8">
+          <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
+            <h1 className="text-3xl mb-5">Total Category</h1>
+            <Doughnut data={dognutChartData} />
           </div>
         </div>
       </div>

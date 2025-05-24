@@ -41,8 +41,8 @@ function SupplierDirectory() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
-      <div className=" flex flex-col gap-5 w-11/12">
+    <div className="grid grid-cols-1 col-span-12 lg:col-span-10 p-4 mt-16 md:mt-0">
+      <div className=" flex flex-col gap-5">
         {showPurchaseModal && (
           <AddSupplierDetails
             addSaleModalSetting={addSaleModalSetting}
