@@ -62,7 +62,7 @@ function Login() {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
+      <div className="bg-white grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
         <div className="flex justify-center">
           <img src={signupImage} alt="" />
         </div>
