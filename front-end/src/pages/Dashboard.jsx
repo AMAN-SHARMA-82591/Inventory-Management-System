@@ -113,7 +113,7 @@ function Dashboard() {
   return (
     <>
       <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 mt-16 md:mt-0 md:grid-cols-3 lg:grid-cols-4 p-4">
-        <article className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
+        <article className="flex flex-col gap-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 transition-colors duration-300">
           {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -134,21 +134,24 @@ function Dashboard() {
           </div> */}
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 dark:text-gray-300">
               Sales
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-gray-900">
+              <span className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 ${dashboardData.totalSales || 0}
               </span>
 
-              {/* <span className="text-xs text-gray-500"> from $240.94 </span> */}
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {" "}
+                Last 30 Days{" "}
+              </span>
             </p>
           </div>
         </article>
 
-        <article className="flex flex-col  gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
+        <article className="flex flex-col gap-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 transition-colors duration-300">
           {/* <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -169,57 +172,60 @@ function Dashboard() {
           </div> */}
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 dark:text-gray-300">
               Purchase
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-gray-900">
+              <span className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 {" "}
                 ${dashboardData.totalPurchase || 0}{" "}
               </span>
 
-              {/* <span className="text-xs text-gray-500"> from $404.32 </span> */}
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {" "}
+                Last 30 Days{" "}
+              </span>
             </p>
           </div>
         </article>
-        <article className="flex flex-col   gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
+        <article className="flex flex-col gap-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 transition-colors duration-300">
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 dark:text-gray-300">
               Total Products
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-gray-900">
+              <span className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 {" "}
                 {dashboardData.totalProducts || 0}{" "}
               </span>
 
-              {/* <span className="text-xs text-gray-500"> from $404.32 </span> */}
+              {/* <span className="text-xs text-gray-500 dark:text-gray-400"> from $404.32 </span> */}
             </p>
           </div>
         </article>
-        <article className="flex flex-col   gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
+        <article className="flex flex-col gap-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 transition-colors duration-300">
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 dark:text-gray-300">
               Total Stores
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-gray-900">
+              <span className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 {" "}
                 {dashboardData.totalStores || 0}{" "}
               </span>
 
-              {/* <span className="text-xs text-gray-500"> from 0 </span> */}
+              {/* <span className="text-xs text-gray-500 dark:text-gray-400"> from 0 </span> */}
             </p>
           </div>
         </article>
       </div>
       <div className="flex flex-wrap gap-4 p-4 justify-evenly ">
-        <div className="bg-white rounded-lg py-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
-            <h1 className="text-3xl mb-5"> Top Products </h1>
+            <h1 className="text-3xl mb-5 dark:text-gray-100"> Top Products </h1>
             <Chart
               options={barChartData.options}
               series={barChartData.series}
@@ -228,9 +234,11 @@ function Dashboard() {
             />
           </div>
         </div>
-        <div className="bg-white rounded-lg py-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
-            <h1 className="text-3xl mb-5">Sales and Purchases</h1>
+            <h1 className="text-3xl mb-5 dark:text-gray-100">
+              Sales and Purchases
+            </h1>
             <Chart
               options={lineChartData.options}
               series={lineChartData.series}
@@ -239,9 +247,9 @@ function Dashboard() {
             />
           </div>
         </div>
-        <div className="bg-white rounded-lg py-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
-            <h1 className="text-3xl mb-5">Total Category</h1>
+            <h1 className="text-3xl mb-5 dark:text-gray-100">Total Category</h1>
             <Doughnut data={dognutChartData} />
           </div>
         </div>

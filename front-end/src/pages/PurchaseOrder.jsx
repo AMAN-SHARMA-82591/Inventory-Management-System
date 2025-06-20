@@ -44,10 +44,10 @@ function PurchaseOrder() {
             handlePageUpdate={handlePageUpdate}
           />
         )}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
+        <div className="overflow-x-auto rounded-lg border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transition-colors duration-300">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Purchase Orders</span>
+              <span className="font-bold dark:text-white">Purchase Orders</span>
             </div>
             <div className="flex gap-4">
               <button
@@ -62,22 +62,22 @@ function PurchaseOrder() {
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead>
               <tr>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Product Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Supplier Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Store Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Quantity
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Total Cost
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Purchase Date
                 </th>
               </tr>
@@ -96,22 +96,22 @@ function PurchaseOrder() {
                   purchaseList.map((element) => {
                     return (
                       <tr key={element.id}>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.product_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.supplier_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.store_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.quantity}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.total_cost + " $"}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {new Date(element.purchase_date).toDateString()}
                         </td>
                       </tr>

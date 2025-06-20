@@ -126,8 +126,8 @@ export default function AddPurchase({
               leaveFrom="opacity-100 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg overflow-y-scroll">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl dark:shadow-gray-900 transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="w-full flex items-center mb-4">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
                       <PlusIcon
@@ -135,7 +135,7 @@ export default function AddPurchase({
                         aria-hidden="true"
                       />
                     </div>
-                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 ">
+                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 dark:text-white">
                       Add Purchase
                     </h1>
                   </div>
@@ -158,7 +158,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="product_id"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Product Name
                             </label>
@@ -169,7 +169,7 @@ export default function AddPurchase({
                               onChange={(e) => {
                                 handleChange(e);
                               }}
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                             >
                               <option value="">Select Product</option>
                               {products.map((element) => (
@@ -187,7 +187,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="supplier_id"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Supplier Name
                             </label>
@@ -195,7 +195,7 @@ export default function AddPurchase({
                               as="select"
                               id="supplier_id"
                               name="supplier_id"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                             >
                               <option value="">Select Supplier</option>
                               {suppliers.map((element) => (
@@ -213,7 +213,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="store_id"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Store Name
                             </label>
@@ -221,7 +221,7 @@ export default function AddPurchase({
                               as="select"
                               id="store_id"
                               name="store_id"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                             >
                               <option value="">Select Store</option>
                               {stores.map((element) => (
@@ -239,7 +239,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="quantity"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Stock Purchased
                             </label>
@@ -247,7 +247,7 @@ export default function AddPurchase({
                               type="number"
                               name="quantity"
                               id="quantity"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                               placeholder="0 - 999"
                               onChange={(e) => {
                                 handleChange(e);
@@ -267,7 +267,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="unit_cost"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Unit Cost
                             </label>
@@ -283,7 +283,7 @@ export default function AddPurchase({
                                   setFieldValue
                                 );
                               }}
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                               placeholder="Eg: 999$"
                             />
                             <ErrorMessage
@@ -295,7 +295,7 @@ export default function AddPurchase({
                           <div>
                             <label
                               htmlFor="total_cost"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                             >
                               Total Purchase Amount
                             </label>
@@ -304,7 +304,7 @@ export default function AddPurchase({
                               name="total_cost"
                               id="total_cost"
                               disabled
-                              className="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                               placeholder="$299"
                             />
                             <ErrorMessage
@@ -315,7 +315,7 @@ export default function AddPurchase({
                           </div>
                           <div>
                             <label
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                               htmlFor="purchase_date"
                             >
                               Purchase Date
@@ -334,7 +334,7 @@ export default function AddPurchase({
                                   .split("T")[0]
                               }
                               max={new Date().toISOString().split("T")[0]}
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                              className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             />
                             <ErrorMessage
                               name="purchase_date"
@@ -343,7 +343,7 @@ export default function AddPurchase({
                             />
                           </div>
                         </div>
-                        <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <div className="bg-gray-50 dark:bg-gray-900 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                           <button
                             type="submit"
                             className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto cursor-pointer"
@@ -352,7 +352,7 @@ export default function AddPurchase({
                           </button>
                           <button
                             type="button"
-                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto cursor-pointer"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:w-auto cursor-pointer"
                             onClick={() => addPurchaseModalSetting()}
                             ref={cancelButtonRef}
                           >

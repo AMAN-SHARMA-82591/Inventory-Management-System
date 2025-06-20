@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 // import UploadImage from "../components/UploadImage";
 import logo from "../assets/logo.png";
-import loginImage from "../assets/Login.png";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import logoImage from "../assets/desk-8419551_1920.png";
 import axiosInstance from "../components/AxiosInstance";
 import { toastSuccess } from "../components/ToastContainer";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -79,15 +80,26 @@ function Register() {
 
   return (
     <>
-      <div className="bg-white grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
-        <div className="w-full max-w-md space-y-8  p-10 rounded-lg">
+      <div className="relative bg-white dark:bg-gray-900 grid grid-cols-1 sm:grid-cols-2 h-screen items-center place-items-center">
+        <button
+          type="button"
+          onClick={authContext.toggleDarkMode}
+          className="absolute top-5 right-10 cursor-pointer mx-2 rounded-full dark:bg-gray-800 p-1"
+        >
+          {authContext.darkMode ? (
+            <SunIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+          ) : (
+            <MoonIcon className="h-6 w-6 text-gray-600" aria-hidden="true" />
+          )}
+        </button>
+        <div className="w-full max-w-md space-y-8 p-10 rounded-lg bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900">
           <div>
             <img
               className="mx-auto h-12 w-auto"
               src={logo}
               alt="Your Company"
             />
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               Register your account
             </h2>
           </div>
@@ -99,7 +111,7 @@ function Register() {
                   name="username"
                   type="text"
                   required
-                  className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="User Name"
                   value={form.username}
                   onChange={handleInputChange}
@@ -112,7 +124,7 @@ function Register() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="relative block w-full rounded-t-md border-0 py-1.5 px-1.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Email address"
                   value={form.email}
                   onChange={handleInputChange}
@@ -125,7 +137,7 @@ function Register() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="relative block w-full rounded-b-md border-0 py-1.5 px-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="relative block w-full rounded-b-md border-0 py-1.5 px-1.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Password"
                   value={form.password}
                   onChange={handleInputChange}
@@ -162,7 +174,7 @@ function Register() {
             <div>
               <button
                 type="submit"
-                className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={registerUser}
               >
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -173,7 +185,7 @@ function Register() {
                 </span>
                 {loading ? <ClipLoader color="#ffff" size={20} /> : "Sign up"}
               </button>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
                 Or{" "}
                 <span className="font-medium text-indigo-600 hover:text-indigo-500">
                   <Link to="/login">
@@ -185,7 +197,7 @@ function Register() {
           </form>
         </div>
         <div className="flex justify-center order-first sm:order-last">
-          <img src={loginImage} alt="" />
+          <img src={logoImage} alt="" />
         </div>
       </div>
     </>

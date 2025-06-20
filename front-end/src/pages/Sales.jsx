@@ -51,10 +51,10 @@ function Sales() {
             authContext={authContext}
           />
         )}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
+        <div className="overflow-x-auto rounded-lg border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transition-colors duration-300">
           <div className="flex justify-between pt-5 pb-3 px-3">
-            <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Sales</span>
+            <div className="flex gap-4 justify-center items-center">
+              <span className="font-bold dark:text-white">Sales</span>
             </div>
             <div className="flex gap-4">
               <button
@@ -68,19 +68,19 @@ function Sales() {
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead>
               <tr>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Product Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Store Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Stock Sold
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Sales Date
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Total Sale Amount
                 </th>
               </tr>
@@ -99,19 +99,19 @@ function Sales() {
                   sales.map((element) => {
                     return (
                       <tr key={element.id}>
-                        <td className="whitespace-nowrap px-4 py-2  text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.product_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-300">
                           {element.store_name}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-300">
                           {element.quantity}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-300">
                           {new Date(element.sales_date).toDateString()}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-300">
                           {element.total_amount + " $"}
                         </td>
                       </tr>

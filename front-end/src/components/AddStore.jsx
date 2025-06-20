@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState, useContext } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 // import UploadImage from "./UploadImage";
@@ -83,8 +83,8 @@ export default function AddStore({ handlePageUpdate }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl dark:shadow-gray-900 transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="w-full flex items-center mb-4">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
                       <PlusIcon
@@ -92,7 +92,7 @@ export default function AddStore({ handlePageUpdate }) {
                         aria-hidden="true"
                       />
                     </div>
-                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 ">
+                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 dark:text-white">
                       Supplier Details
                     </h1>
                   </div>
@@ -100,10 +100,7 @@ export default function AddStore({ handlePageUpdate }) {
                     <form action="#">
                       <div className="grid gap-4 mt-6 mb-4 sm:grid-cols-2">
                         <div>
-                          <label
-                            htmlFor="name"
-                            className="block mb-2 text-sm font-medium text-gray-900"
-                          >
+                          <label  htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
                             Store Name
                           </label>
                           <input
@@ -112,15 +109,12 @@ export default function AddStore({ handlePageUpdate }) {
                             id="name"
                             value={form.name}
                             onChange={handleInputChange}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Enter Store Name"
                           />
                         </div>
                         <div>
-                          <label
-                            htmlFor="manager"
-                            className="block mb-2 text-sm font-medium text-gray-900"
-                          >
+                          <label htmlFor="manager" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
                             Manager Name
                           </label>
                           <input
@@ -129,15 +123,12 @@ export default function AddStore({ handlePageUpdate }) {
                             id="manager"
                             value={form.manager}
                             onChange={handleInputChange}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Enter Manager Name"
                           />
                         </div>
                         <div className="sm:col-span-2">
-                          <label
-                            htmlFor="location"
-                            className="block mb-2 text-sm font-medium text-gray-900"
-                          >
+                          <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
                             location
                           </label>
                           <input
@@ -146,7 +137,7 @@ export default function AddStore({ handlePageUpdate }) {
                             id="location"
                             value={form.location}
                             onChange={handleInputChange}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Enter Location"
                           />
                         </div>
@@ -197,17 +188,17 @@ export default function AddStore({ handlePageUpdate }) {
                     </form>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="bg-gray-50 dark:bg-gray-900 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto cursor-pointer"
+                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                     onClick={addProduct}
                   >
                     Submit
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto cursor-pointer"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:w-auto"
                     onClick={() => setOpen(false)}
                     ref={cancelButtonRef}
                   >

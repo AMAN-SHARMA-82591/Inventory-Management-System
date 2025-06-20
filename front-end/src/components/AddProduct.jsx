@@ -98,8 +98,8 @@ export default function AddProduct({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl dark:shadow-gray-900 transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="w-full flex items-center mb-4">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
                       <PlusIcon
@@ -107,7 +107,7 @@ export default function AddProduct({
                         aria-hidden="true"
                       />
                     </div>
-                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 ">
+                    <h1 className="text-lg ml-2 py-4 font-semibold leading-6 text-gray-900 dark:text-white">
                       Add Product
                     </h1>
                   </div>
@@ -117,11 +117,12 @@ export default function AddProduct({
                         <div className="sm:col-span-2">
                           <label
                             htmlFor="name"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Name
                           </label>
                           <input
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             type="text"
                             name="name"
                             id="name"
@@ -129,20 +130,19 @@ export default function AddProduct({
                             onChange={(e) =>
                               handleInputChange(e.target.name, e.target.value)
                             }
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Ex. Apple iMac 27&ldquo;"
                           />
                         </div>
                         <div>
                           <label
                             htmlFor="category_id"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Category Name
                           </label>
                           <select
                             id="category_id"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             name="category_id"
                             onChange={(e) =>
                               handleInputChange(e.target.name, e.target.value)
@@ -161,13 +161,13 @@ export default function AddProduct({
                         <div>
                           <label
                             htmlFor="supplier_id"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Supplier Name
                           </label>
                           <select
                             id="supplier_id"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             name="supplier_id"
                             onChange={(e) =>
                               handleInputChange(e.target.name, e.target.value)
@@ -186,7 +186,7 @@ export default function AddProduct({
                         <div>
                           <label
                             htmlFor="price"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Price
                           </label>
@@ -198,14 +198,14 @@ export default function AddProduct({
                             onChange={(e) =>
                               handleInputChange(e.target.name, e.target.value)
                             }
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="$299"
                           />
                         </div>
                         <div>
                           <label
                             htmlFor="quantity"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Quantity
                           </label>
@@ -217,7 +217,7 @@ export default function AddProduct({
                             onChange={(e) =>
                               handleInputChange(e.target.name, e.target.value)
                             }
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="0 - 999"
                           />
                         </div>
@@ -225,7 +225,7 @@ export default function AddProduct({
                         <div className="sm:col-span-2">
                           <label
                             htmlFor="description"
-                            className="block mb-2 text-sm font-medium text-gray-900"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             Description
                           </label>
@@ -233,7 +233,7 @@ export default function AddProduct({
                             id="description"
                             rows="5"
                             name="description"
-                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Write a description..."
                             value={product.description}
                             onChange={(e) =>
@@ -251,17 +251,17 @@ export default function AddProduct({
                     </form>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="bg-gray-50 dark:bg-gray-900 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto cursor-pointer"
+                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                     onClick={addProduct}
                   >
                     Add Product
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto cursor-pointer"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:w-auto"
                     onClick={() => addProductModalSetting()}
                     ref={cancelButtonRef}
                   >

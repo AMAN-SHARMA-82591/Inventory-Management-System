@@ -48,10 +48,10 @@ function Store() {
     <div className="grid grid-cols-1 col-span-12 lg:col-span-10 mt-16 md:mt-0 p-4">
       <div className=" flex flex-col gap-5">
         {showModal && <AddStore handlePageUpdate={handlePageUpdate} />}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
+        <div className="overflow-x-auto rounded-lg border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transition-colors duration-300">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Manage Store</span>
+              <span className="font-bold dark:text-white">Manage Store</span>
             </div>
             <div className="flex gap-4">
               <button
@@ -65,13 +65,13 @@ function Store() {
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead>
               <tr>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Store Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Manager Name
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-100">
                   Location
                 </th>
               </tr>
@@ -90,13 +90,13 @@ function Store() {
                   stores.map((element) => {
                     return (
                       <tr key={element.id}>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-gray-100">
                           {element.name && element.name}
                         </td>
-                        <td className="px-4 py-2 text-gray-700">
+                        <td className="px-4 py-2 text-gray-700 dark:text-gray-300">
                           {element.manager && element.manager}
                         </td>
-                        <td className="px-4 py-2 text-gray-700 break-words max-w-[300px]">
+                        <td className="px-4 py-2 text-gray-700 dark:text-gray-300 break-words max-w-[300px]">
                           {element.location && element.location}
                         </td>
                       </tr>

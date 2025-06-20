@@ -5,6 +5,8 @@ import {
   BellIcon,
   UserCircleIcon,
   XMarkIcon,
+  MoonIcon,
+  SunIcon,
 } from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
 import { Link, useLocation } from "react-router";
@@ -32,7 +34,11 @@ export default function Header() {
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800 w-full fixed top-0 z-50">
+        <Disclosure
+          as="nav"
+          // shadow-[0_2px_4px_-1px_rgba(22,55,452,0.1)]
+          className="bg-gray-800 dark:bg-gray-900 w-full fixed top-0 z-50 transition-colors duration-300"
+        >
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -53,6 +59,17 @@ export default function Header() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
+                      <button
+                        type="button"
+                        onClick={authContext.toggleDarkMode}
+                        className="cursor-pointer mx-2 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800"
+                      >
+                        {authContext.darkMode ? (
+                          <SunIcon className="h-6 w-6" aria-hidden="true" />
+                        ) : (
+                          <MoonIcon className="h-6 w-6" aria-hidden="true" />
+                        )}
+                      </button>
                       <button
                         type="button"
                         className="cursor-pointer rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -81,13 +98,13 @@ export default function Header() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 <button
                                   type="button"
                                   onClick={authContext.signout}
-                                  className="block w-full px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                  className="block w-full px-4 py-2 text-sm text-gray-700 cursor-pointer dark:bg-gray-800 dark:text-white"
                                 >
                                   {item.name}{" "}
                                 </button>
@@ -118,7 +135,7 @@ export default function Header() {
                 </div>
               </div>
 
-              <Disclosure.Panel className="md:hidden">
+              <Disclosure.Panel className="md:hidden bg-gray-800 dark:bg-gray-900 transition-colors duration-300">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => (
                     <Link to={item.href} key={item.name}>
@@ -126,9 +143,9 @@ export default function Header() {
                         as="a"
                         className={classNames(
                           location.pathname === item.href
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "block rounded-md px-3 py-2 text-base font-medium"
+                            ? "bg-gray-900 text-white dark:bg-gray-700 dark:text-blue-300"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-blue-300",
+                          "block rounded-md px-3 py-2 text-base font-medium transition-colors duration-200"
                         )}
                         aria-current={
                           location.pathname === item.href ? "page" : undefined
@@ -142,10 +159,10 @@ export default function Header() {
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">
+                      <div className="text-base font-medium leading-none text-white dark:text-gray-200">
                         {authContext?.user?.username || "user" + " "}
                       </div>
-                      <div className="text-sm font-medium leading-none text-gray-400">
+                      <div className="text-sm font-medium leading-none text-gray-400 dark:text-gray-400">
                         {authContext?.user?.email || "user@gmail.com"}
                       </div>
                     </div>
@@ -164,7 +181,7 @@ export default function Header() {
                         as="button"
                         type="button"
                         onClick={authContext.signout}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-blue-300 transition-colors duration-200"
                       >
                         {item.name}{" "}
                       </Disclosure.Button>
