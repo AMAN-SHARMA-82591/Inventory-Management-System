@@ -2,8 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const cookieparser = require("cookie-parser");
 
-const app = express();
 require("./config/db");
+const app = express();
 
 const allowedOrigins = process.env.FRONTEND_URL.split(",");
 
