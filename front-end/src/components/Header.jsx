@@ -5,12 +5,11 @@ import {
   BellIcon,
   UserCircleIcon,
   XMarkIcon,
-  MoonIcon,
-  SunIcon,
 } from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
 import { Link, useLocation } from "react-router";
 import logoImage from "../assets/logo.png";
+import SwitchDarkMode from "./SwitchDarkMode";
 
 const navigation = [
   { name: "Dashboard", href: "/" },
@@ -59,17 +58,7 @@ export default function Header() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      <button
-                        type="button"
-                        onClick={authContext.toggleDarkMode}
-                        className="cursor-pointer mx-2 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        {authContext.darkMode ? (
-                          <SunIcon className="h-6 w-6" aria-hidden="true" />
-                        ) : (
-                          <MoonIcon className="h-6 w-6" aria-hidden="true" />
-                        )}
-                      </button>
+                      <SwitchDarkMode absolute={false} />
                       <button
                         type="button"
                         className="cursor-pointer rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

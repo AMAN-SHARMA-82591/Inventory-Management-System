@@ -2,13 +2,13 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import AuthContext from "../AuthContext";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 // import signupImage from "../assets/signup.jpg";
 import loginImage from "../assets/background-5048215_1920.png";
 import logoImage from "../assets/logo.png";
 import { toastSuccess } from "../components/ToastContainer";
 import axiosInstance from "../components/AxiosInstance";
 import ClipLoader from "react-spinners/ClipLoader";
+import SwitchDarkMode from "../components/SwitchDarkMode";
 
 function Login() {
   const [form, setForm] = useState({
@@ -66,17 +66,7 @@ function Login() {
     <>
       <div className="bg-white dark:bg-gray-900 grid grid-cols-1 sm:grid-cols-2 h-screen relative">
         {/* Left image section */}
-        <button
-          type="button"
-          onClick={authContext.toggleDarkMode}
-          className="absolute top-5 right-10 cursor-pointer mx-2 rounded-full dark:bg-gray-800 p-1"
-        >
-          {authContext.darkMode ? (
-            <SunIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
-          ) : (
-            <MoonIcon className="h-6 w-6 text-gray-600" aria-hidden="true" />
-          )}
-        </button>
+        <SwitchDarkMode absolute={true} />
         <div className="relative hidden sm:block">
           <img
             className="absolute inset-0 h-full w-full object-cover"

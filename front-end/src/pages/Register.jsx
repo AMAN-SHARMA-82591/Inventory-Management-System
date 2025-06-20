@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 // import UploadImage from "../components/UploadImage";
 import logo from "../assets/logo.png";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import logoImage from "../assets/desk-8419551_1920.png";
 import axiosInstance from "../components/AxiosInstance";
 import { toastSuccess } from "../components/ToastContainer";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useContext } from "react";
 import AuthContext from "../AuthContext";
+import SwitchDarkMode from "../components/SwitchDarkMode";
 
 function Register() {
   const [form, setForm] = useState({
@@ -81,17 +81,7 @@ function Register() {
   return (
     <>
       <div className="relative bg-white dark:bg-gray-900 grid grid-cols-1 sm:grid-cols-2 h-screen items-center place-items-center">
-        <button
-          type="button"
-          onClick={authContext.toggleDarkMode}
-          className="absolute top-5 right-10 cursor-pointer mx-2 rounded-full dark:bg-gray-800 p-1"
-        >
-          {authContext.darkMode ? (
-            <SunIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
-          ) : (
-            <MoonIcon className="h-6 w-6 text-gray-600" aria-hidden="true" />
-          )}
-        </button>
+        <SwitchDarkMode absolute={true} />
         <div className="w-full max-w-md space-y-8 p-10 rounded-lg bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900">
           <div>
             <img
