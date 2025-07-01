@@ -21,7 +21,7 @@ function SideMenu() {
       <div className="px-4 py-6">
         <nav aria-label="Main Nav" className="mt-6 flex flex-col space-y-1">
           <NavLink
-            to="/"
+            to="/dashboard"
             className={({ isActive }) =>
               `flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition-colors duration-200 ${
                 isActive

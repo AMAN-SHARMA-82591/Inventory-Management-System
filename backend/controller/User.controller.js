@@ -1,5 +1,5 @@
 const connection = require("../config/db");
-const { validationResult } = require("express-validator");
+// const { validationResult } = require("express-validator");
 
 const getUsersList = (req, res) => {
   try {

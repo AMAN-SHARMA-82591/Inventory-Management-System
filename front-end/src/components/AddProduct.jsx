@@ -13,18 +13,21 @@ export default function AddProduct({
     name: "",
     price: 0.0,
     quantity: 0,
+    store_id: null,
     category_id: null,
     supplier_id: null,
     description: "",
   });
   const [open, setOpen] = useState(true);
   const [suppliers, setAllSuppliers] = useState([]);
+  const [stores, setAllStores] = useState([]);
   const [categories, setAllCategories] = useState([]);
   const cancelButtonRef = useRef(null);
 
   useEffect(() => {
     fetchSupplierData();
     fetchCategoryData();
+    fetchStoreData();
   }, []);
 
   const handleInputChange = (key, value) => {
@@ -36,6 +39,17 @@ export default function AddProduct({
       const response = await axiosInstance.get("/supplier");
       if (response.data) {
         setAllSuppliers(response.data.result);
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const fetchStoreData = async () => {
+    try {
+      const response = await axiosInstance.get("/store");
+      if (response.data) {
+        setAllStores(response.data.result);
       }
     } catch (error) {
       handleError(error);
@@ -150,6 +164,31 @@ export default function AddProduct({
                           >
                             <option selected="">Select Category</option>
                             {categories.map((element) => {
+                              return (
+                                <option key={element.id} value={element.id}>
+                                  {element.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="store_id"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                          >
+                            Store Name
+                          </label>
+                          <select
+                            id="store_id"
+                            className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            name="store_id"
+                            onChange={(e) =>
+                              handleInputChange(e.target.name, e.target.value)
+                            }
+                          >
+                            <option selected="">Select Store</option>
+                            {stores.map((element) => {
                               return (
                                 <option key={element.id} value={element.id}>
                                   {element.name}

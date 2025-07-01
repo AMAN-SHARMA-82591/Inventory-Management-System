@@ -44,8 +44,7 @@ function Login() {
             });
           }
         } else {
-          localStorage.removeItem("user");
-          setErrorMsg("Unexpected error. Please try after some time");
+          throw new Error();
         }
       } catch (error) {
         localStorage.removeItem("user");

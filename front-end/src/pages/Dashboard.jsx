@@ -226,12 +226,21 @@ function Dashboard() {
         <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5 dark:text-gray-100"> Top Products </h1>
-            <Chart
-              options={barChartData.options}
-              series={barChartData.series}
-              type="bar"
-              width="500"
-            />
+            {dashboardData.topProductStock &&
+            dashboardData.topProductStock.length > 0 ? (
+              <Chart
+                options={barChartData.options}
+                series={barChartData.series}
+                type="bar"
+                width="500"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-[500px] h-[300px]">
+                <p className="text-center text-gray-800 dark:text-gray-300">
+                  No Entities Found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
@@ -239,18 +248,36 @@ function Dashboard() {
             <h1 className="text-3xl mb-5 dark:text-gray-100">
               Sales and Purchases
             </h1>
-            <Chart
-              options={lineChartData.options}
-              series={lineChartData.series}
-              type="line"
-              width="500"
-            />
+            {dashboardData.totalSalesAndPurchase &&
+            dashboardData.totalSalesAndPurchase.length > 0 ? (
+              <Chart
+                options={lineChartData.options}
+                series={lineChartData.series}
+                type="line"
+                width="500"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-[500px] h-[300px]">
+                <p className="text-center text-gray-800 dark:text-gray-300">
+                  No Entities Found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg py-8 transition-colors duration-300">
           <div className="my-4 xs:mx-8 sm:mb-16 sm:mx-14">
             <h1 className="text-3xl mb-5 dark:text-gray-100">Total Category</h1>
-            <Doughnut data={dognutChartData} />
+            {dashboardData.totalCategoryStock &&
+            dashboardData.totalCategoryStock.length > 0 ? (
+              <Doughnut data={dognutChartData} />
+            ) : (
+              <div className="flex items-center justify-center w-[400px] h-[300px]">
+                <p className="text-center text-gray-800 dark:text-gray-300">
+                  No Categories Found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
