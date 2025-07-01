@@ -9,6 +9,7 @@ import { toastSuccess } from "../components/ToastContainer";
 import axiosInstance from "../components/AxiosInstance";
 import ClipLoader from "react-spinners/ClipLoader";
 import SwitchDarkMode from "../components/SwitchDarkMode";
+import GoogleAuthLogin from "./GoogleAuthLogin";
 
 function Login() {
   const [form, setForm] = useState({
@@ -176,6 +177,9 @@ function Login() {
                     </Link>
                   </span>
                 </p>
+              </div>
+              <div className="flex justify-center">
+                <GoogleAuthLogin />
               </div>
             </form>
           </div>
