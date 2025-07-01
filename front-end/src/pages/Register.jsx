@@ -9,6 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useContext } from "react";
 import AuthContext from "../AuthContext";
 import SwitchDarkMode from "../components/SwitchDarkMode";
+import GoogleAuthLogin from "./GoogleAuthLogin";
 
 function Register() {
   const [form, setForm] = useState({
@@ -183,6 +184,9 @@ function Register() {
                   </Link>
                 </span>
               </p>
+            </div>
+            <div className="flex justify-center">
+              <GoogleAuthLogin />
             </div>
           </form>
         </div>

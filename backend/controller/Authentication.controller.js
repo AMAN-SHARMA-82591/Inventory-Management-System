@@ -1,8 +1,11 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+// const generator = require("generate-password");
 const connection = require("../config/db");
-const { ROLES, expirySeconds } = require("../utils/staticData");
+const { ROLES } = require("../utils/staticData");
+const verifyIDToken = require("../services/googleAuthService");
+const { GET_USER_EMAIL, CREATE_NEW_USER } = require("../queries/userQueries");
+const { setAuthCookie } = require("../utils/cookieHelpers");
 
 const register = (req, res) => {
   const { username, email, password, role = "staff" } = req.body;
@@ -40,7 +43,7 @@ const register = (req, res) => {
           const salt = await bcrypt.genSalt(5);
           const encryptPassword = await bcrypt.hash(password, salt);
           connection.execute(
-            "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
+            CREATE_NEW_USER,
             [username, email, encryptPassword, role],
             async (error, result) => {
               if (error) {
@@ -52,25 +55,8 @@ const register = (req, res) => {
               if (result.affectedRows) {
                 const [user] = await connection
                   .promise()
-                  .query(
-                    "SELECT id, username, email, role, created_at, updated_at FROM users WHERE email=?",
-                    email
-                  );
-                const cookiePayload = JSON.stringify({
-                  ...user[0],
-                  expiry: Math.round(Date.now() / 1000 + expirySeconds),
-                });
-                res.cookie(
-                  "token",
-                  Buffer.from(cookiePayload).toString("base64url"),
-                  {
-                    httpOnly: true,
-                    signed: true,
-                    maxAge: expirySeconds * 1000, // in miliseconds
-                    sameSite: "None",
-                    secure: true,
-                  }
-                );
+                  .query(GET_USER_EMAIL, email);
+                setAuthCookie(res, user[0]);
                 return res.status(201).json({
                   success: true,
                   msg: "New user created!",
@@ -105,9 +91,9 @@ const login = async (req, res) => {
     });
   }
   try {
-    connection.query(
+    connection.execute(
       "Select * FROM users WHERE email = ?",
-      email,
+      [email],
       async (error, result) => {
         if (error) {
           console.error("error", error);
@@ -121,32 +107,22 @@ const login = async (req, res) => {
             .json({ success: false, msg: "User not found." });
         } else {
           const { password: userPassword, ...entities } = result[0];
+          if (userPassword === null) {
+            return res.status(403).json({
+              success: false,
+              msg: "Password login is not yet supported for Google-authenticated accounts. Please use Google to continue.",
+            });
+          }
           const isPasswordMatch = await bcrypt.compare(password, userPassword);
           if (!isPasswordMatch) {
             return res
               .status(401)
               .json({ success: false, msg: "Invalid password" });
           }
-          if (result.length) {
-            const cookiePayload = JSON.stringify({
-              ...entities,
-              expiry: Math.round(Date.now() / 1000 + expirySeconds),
-            });
-            res.cookie(
-              "token",
-              Buffer.from(cookiePayload).toString("base64url"),
-              {
-                httpOnly: true,
-                signed: true,
-                maxAge: expirySeconds * 1000, // in miliseconds
-                sameSite: "None",
-                secure: true,
-              }
-            );
-            return res
-              .status(200)
-              .json({ success: true, msg: "Login Successful", user: entities });
-          }
+          setAuthCookie(res, entities);
+          return res
+            .status(200)
+            .json({ success: true, msg: "Login Successful", user: entities });
         }
       }
     );
@@ -155,6 +131,63 @@ const login = async (req, res) => {
     return res.status(500).json({
       msg: "Something went wrong",
     });
+  }
+};
+
+const loginWithGoogle = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    const { name, email } = await verifyIDToken(idToken);
+    connection.execute(GET_USER_EMAIL, [email], async (error, result) => {
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          msg: "Error fetching data",
+        });
+      }
+      if (!result.length) {
+        // const password = generator.generate({
+        //   length: 10,
+        //   numbers: true,
+        //   uppercase: true,
+        //   lowercase: true,
+        //   excludeSimilarCharacters: true,
+        // });
+        // const salt = await bcrypt.genSalt(5);
+        // const encryptPassword = await bcrypt.hash(password, salt);
+        connection.execute(
+          CREATE_NEW_USER,
+          [name, email, null, "staff"],
+          async (error, result) => {
+            if (error) {
+              return res
+                .status(400)
+                .json({ success: false, msg: "Error inserting data" });
+            }
+            if (result.affectedRows) {
+              const [user] = await connection
+                .promise()
+                .query(GET_USER_EMAIL, email);
+              setAuthCookie(res, user[0]);
+              return res.status(201).json({
+                success: true,
+                msg: "Login successful",
+                user: user[0],
+              });
+            }
+          }
+        );
+      } else {
+        const { ...entities } = result[0];
+        setAuthCookie(res, entities);
+        return res
+          .status(200)
+          .json({ success: true, msg: "Login Successfull", user: entities });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Server Error");
   }
 };
 
@@ -167,4 +200,4 @@ const logout = async (req, res) => {
   return res.status(200).json({ msg: "Logout successful" });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, loginWithGoogle };

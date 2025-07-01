@@ -1,5 +1,6 @@
 const connection = require("../config/db");
-const { validationResult } = require("express-validator");
+const { GET_USER } = require("../queries/userQueries");
+// const { validationResult } = require("express-validator");
 
 const getUsersList = (req, res) => {
   try {
@@ -24,19 +25,15 @@ const getUsersList = (req, res) => {
 const getUser = (req, res) => {
   const { id } = req.params;
   try {
-    connection.query(
-      "SELECT id, username, email, role, created_at, updated_at FROM users WHERE id=?",
-      id,
-      (error, result) => {
-        if (error) {
-          console.error("Error inserting data:", error);
-          return res
-            .status(400)
-            .json({ success: false, msg: "Error Inserting Data" });
-        }
-        res.status(200).json({ success: true, result: result[0] });
+    connection.query(GET_USER, id, (error, result) => {
+      if (error) {
+        console.error("Error fetching data:", error);
+        return res
+          .status(400)
+          .json({ success: false, msg: "Error fetching Data" });
       }
-    );
+      return res.status(200).json({ success: true, result: result[0] });
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");

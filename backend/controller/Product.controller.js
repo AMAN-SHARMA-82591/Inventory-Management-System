@@ -121,9 +121,16 @@ const createProduct = async (req, res) => {
       errors: errors.array(),
     });
   }
-  const { name, description, price, quantity, category_id, supplier_id } =
-    req.body;
-  const finalCategoryId = category_id ?? 8;
+  const {
+    name,
+    description,
+    price,
+    quantity,
+    category_id,
+    store_id,
+    supplier_id,
+  } = req.body;
+  // const finalCategoryId = category_id ?? 8;
   try {
     const categoryExists = await checkIfExists("categories", "id", category_id);
     if (!categoryExists) {
@@ -150,7 +157,7 @@ const createProduct = async (req, res) => {
         description,
         price,
         quantity,
-        finalCategoryId,
+        category_id,
         supplier_id,
       ]);
     if (productResult.affectedRows === 0) {
@@ -166,7 +173,7 @@ const createProduct = async (req, res) => {
       .execute(CREATE_PURCHASE, [
         newProductId,
         supplier_id,
-        1,
+        store_id || 1,
         quantity,
         purchaseDate,
         (price * quantity).toFixed(2),

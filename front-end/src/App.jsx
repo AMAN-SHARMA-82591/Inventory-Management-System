@@ -56,7 +56,7 @@ function App() {
   if (loading) return <Loading size={75} />;
   return (
     <AuthContext.Provider value={value}>
-      <AppRoutes />
+      <AppRoutes userId={user?.id} />
       <ToastContainer
         position="bottom-right"
         autoClose={true}
